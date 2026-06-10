@@ -381,7 +381,7 @@
       { id: 109, nombre: "Los Toldos", categoria: "naturaleza", subtexto: "Paraje natural alto", coords: [-35.29462592466467186, -68.23976145781263369] },
       { id: 110, nombre: "Casa Vivas", categoria: "cultura", subtexto: "Punto patrimonial", coords: [-35.52967240487560474, -68.11602881604424908] },
       { id: 111, nombre: "Parque de Los Niños", categoria: "cultura", subtexto: "Centro urbano San Rafael", coords: [-34.61187403239883764, -68.34986408829281856] },
-      { id: 112, font: "bold", nombre: "Laberinto de Borges", categoria: "cultura", subtexto: "Finca Los Álamos, Cuadro Nacional", coords: [-34.65606527007969362, -68.23844799481446444] },
+      { id: 112, nombre: "Laberinto de Borges", categoria: "cultura", subtexto: "Finca Los Álamos, Cuadro Nacional", coords: [-34.65606527007969362, -68.23844799481446444] },
       { id: 113, nombre: "Embalse Los Reyunos", categoria: "agua", subtexto: "Turismo activo y náutico", coords: [-34.58802004488386217, -68.6541472761929441] },
       { id: 114, nombre: "Pueblo Villa 25 de Mayo", categoria: "pueblos", subtexto: "Villa fundacional e histórica", coords: [-34.5835041308677944, -68.54513009769816279] },
       { id: 115, nombre: "Ex Hotel Termas El Sosneado", categoria: "naturaleza", subtexto: "Ruinas históricas en la cordillera", coords: [-34.7695944359775666, -70.06173138324255945] },
@@ -390,7 +390,7 @@
       { id: 118, nombre: "Pueblo Punta de Agua", categoria: "pueblos", subtexto: "Vertientes naturales", coords: [-35.52286679896856469, -68.08238907103442727] },
       { id: 119, nombre: "Observatorio Pierre Auger", categoria: "cultura", subtexto: "Ciencia de rayos cósmicos", coords: [-35.29202258493646127, -69.01196505785975432] },
       { id: 120, nombre: "Castillo de Pincheira", categoria: "naturaleza", subtexto: "Formaciones rocosas emblemáticas", coords: [-35.51789756046086666, -69.79383200754887184] },
-      { id: 121, nombre: "Parque Arqueológico Las Tinajas", categoria: "cultura", subtexto: "Arte rupestre y senderos naturales", coords: [-34.75121171308300916, -68.4726901071655476] },
+      { id: 121, font: "bold", nombre: "Parque Arqueológico Las Tinajas", categoria: "cultura", subtexto: "Arte rupestre y senderos naturales", coords: [-34.75121171308300916, -68.4726901071655476] },
       { id: 122, nombre: "Pozos de Las Ánimas", categoria: "naturaleza", subtexto: "Dos dolinas de agua verde esmeralda", coords: [-35.18961645422203333, -69.99958156903220186] },
       { id: 123, nombre: "Parador El Desvío", categoria: "pueblos", subtexto: "Punto de ruta tradicional", coords: [-34.85038934951371203, -68.69549880337673642] },
       { id: 124, nombre: "Refugio La Faja", categoria: "naturaleza", subtexto: "Refugio de montañismo", coords: [-34.53162693962244134, -69.26940020203875292] },
@@ -431,289 +431,6 @@
       { id: "g4", titulo: "Atardecer de Viñedos bajo la Cordillera", categoria: "lugares", url: "https://images.unsplash.com/photo-1516589178571-6af773aaa360?w=800&auto=format&fit=crop" }
     ];
 
-    // Iconos vectoriales de hermosa calidad visual para el listado de comercios
-    const Icons = {
-      Grape: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-purple-700">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48z" />
-        </svg>
-      ),
-      Droplet: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-green-600">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0z" />
-        </svg>
-      ),
-      Food: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-amber-600">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615 3.001 3.001 0 0 0 3.75.615m-7.5 0h7.5m3.75 0a3.001 3.001 0 0 0 3.75-.615 3.001 3.001 0 0 0 3.75.615m-7.5 0h7.5m3.75 0V3.75a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0-.75.75v5.591m-.75 0C14.34 8.6 12.87 8 12 8M12 8c-.87 0-2.34.6-3.75 1.349M12 8v13" />
-        </svg>
-      ),
-      Factory: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-gray-600">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15" />
-        </svg>
-      ),
-      Zap: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-yellow-500">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-        </svg>
-      ),
-      Municipal: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-sky-600">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.33l-7.5-5-7.5 5V21" />
-        </svg>
-      )
-    };
-
-    const getIconType = (tipo) => {
-      switch (tipo) {
-        case 'bodega': return <Icons.Grape />;
-        case 'aceite': return <Icons.Droplet />;
-        case 'energia': return <Icons.Zap />;
-        case 'fabrica': return <Icons.Factory />;
-        case 'municipal': return <Icons.Municipal />;
-        default: return <Icons.Food />;
-      }
-    };
-
-    // Emojis representativos de la actividad
-    const getMarkerSymbol = (tipo) => {
-      switch(tipo) {
-        case 'bodega': return '🍷';
-        case 'aceite': return '🫒';
-        case 'energia': return '⚡';
-        case 'fabrica': return '🏭';
-        case 'municipal': return '🏛️';
-        case 'hotel': return '🏨';
-        case 'destileria': return '🍸';
-        case 'restaurante': return '🍽️';
-        default: return '📍';
-      }
-    };
-
-    // Configuración turística
-    const getTouristConfig = (categoria) => {
-      switch(categoria) {
-        case 'agua': return { color: '#0284c7', icon: '💧', label: 'Diques y Espejos' };
-        case 'naturaleza': return { color: '#16a34a', icon: '🌲', label: 'Aventura y Valles' };
-        case 'pueblos': return { color: '#4b5563', icon: '🗺️', label: 'Pueblos y Parajes' };
-        case 'cultura': return { color: '#ea580c', icon: '📸', label: 'Cultura y Miradores' };
-        case 'servicios': return { color: '#7e22ce', icon: '🏛️', label: 'Delegación/Servicios' };
-        default: return { color: '#64748b', icon: '📍', label: 'General' };
-      }
-    };
-
-    // --- COMPONENTE DE MAPA INTERACTIVO (Soporta ambos mapas y GPS "Estoy Aquí") ---
-    function InteractiveMap({ data, isTouristMode, activeMarker, onMarkerClick, userLocation, onTriggerGPS }) {
-      const mapInstanceRef = useRef(null);
-      const markersRef = useRef({});
-      const gpsMarkerRef = useRef(null);
-
-      const getMarkerColor = (tipo) => {
-        switch(tipo) {
-          case 'bodega': return '#7e22ce';
-          case 'aceite': return '#16a34a';
-          case 'energia': return '#eab308';
-          case 'fabrica': return '#4b5563';
-          case 'municipal': return '#0284c7';
-          case 'hotel': return '#2563eb';
-          case 'destileria': return '#db2777';
-          case 'restaurante': return '#ea580c';
-          default: return '#ca8a04';
-        }
-      };
-
-      // 1. Inicialización única del mapa
-      useEffect(() => {
-        const container = L.DomUtil.get('map');
-        if (container != null) {
-          container._leaflet_id = null;
-        }
-
-        // Centrado inicial de Cuadro Benegas
-        const map = L.map('map', {
-          center: [-34.636, -68.438],
-          zoom: isTouristMode ? 9.5 : 12.5
-        });
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap'
-        }).addTo(map);
-
-        mapInstanceRef.current = map;
-
-        setTimeout(() => {
-          map.invalidateSize();
-        }, 150);
-
-        return () => {
-          map.remove();
-          mapInstanceRef.current = null;
-        };
-      }, [isTouristMode]);
-
-      // 2. Renderizado dinámico de marcadores (Empresas o Atractivos Turísticos)
-      useEffect(() => {
-        const map = mapInstanceRef.current;
-        if (!map) return;
-
-        // Limpiar marcadores antiguos
-        Object.values(markersRef.current).forEach(marker => {
-          map.removeLayer(marker);
-        });
-        markersRef.current = {};
-
-        const currentMarkers = {};
-
-        data.forEach(item => {
-          if (item.coords) {
-            let color = '';
-            let symbol = '';
-            let labelClass = 'custom-map-label';
-
-            if (isTouristMode) {
-              const cfg = getTouristConfig(item.categoria);
-              color = cfg.color;
-              symbol = cfg.icon;
-              labelClass = 'custom-tourist-label';
-            } else {
-              color = getMarkerColor(item.tipo);
-              symbol = getMarkerSymbol(item.tipo);
-            }
-            
-            // Si es la Delegación Municipal de Cuadro Benegas (ID: 15) en el mapa de empresas, destacarla discretamente
-            const isDelegacion = item.id === 15 && !isTouristMode;
-            
-            const customIcon = L.divIcon({
-              className: 'custom-pin-marker',
-              html: `<div style="
-                background-color: ${color}; 
-                width: 34px; 
-                height: 34px; 
-                border-radius: 50%; 
-                border: 3px solid ${isDelegacion ? '#f59e0b' : 'white'}; 
-                box-shadow: 0 3px 8px rgba(0,0,0,0.35); 
-                display: flex; 
-                align-items: center; 
-                justify-content: center;
-                transform: scale(${activeMarker === item.id ? '1.3' : '1'});
-                transition: transform 0.2s ease;
-                font-size: 16px;
-                position: relative;
-              ">
-                ${symbol}
-                ${isDelegacion ? `<span style="position:absolute; top:-4px; right:-4px; background:#f59e0b; width:10px; height:10px; border-radius:50%; border:1px solid white;"></span>` : ''}
-              </div>`,
-              iconSize: [34, 34],
-              iconAnchor: [17, 17]
-            });
-
-            const marker = L.marker(item.coords, { icon: customIcon }).addTo(map);
-            
-            // Tooltip flotante con el nombre
-            marker.bindTooltip(item.nombre, {
-              permanent: true,
-              direction: 'top',
-              className: labelClass,
-              offset: [0, -18]
-            });
-            
-            const subtextPopup = isTouristMode ? item.subtexto : `${item.industria} • 📍 ${item.sede}`;
-
-            marker.bindPopup(`
-              <div style="font-family: 'Plus Jakarta Sans', sans-serif; min-width: 165px; padding: 2px;">
-                <h4 style="font-weight: 800; margin: 0 0 2px 0; color: #111827; font-size:13px;">${item.nombre}</h4>
-                <div style="font-size: 11px; color: #4b5563; margin-top:4px;">
-                  ${subtextPopup}
-                </div>
-              </div>
-            `);
-
-            marker.on('click', () => {
-              if (onMarkerClick) onMarkerClick(item.id);
-            });
-
-            currentMarkers[item.id] = marker;
-          }
-        });
-
-        markersRef.current = currentMarkers;
-
-        // Auto-zoom ajustado para englobar el dataset correspondiente
-        if (data.length > 0) {
-          const latLngs = data.filter(item => item.coords).map(item => item.coords);
-          if (latLngs.length > 0) {
-            const bounds = L.latLngBounds(latLngs);
-            map.fitBounds(bounds, { padding: [60, 60], maxZoom: isTouristMode ? 12 : 14 });
-          }
-        }
-
-      }, [data, isTouristMode]);
-
-      // 3. Manejo reactivo de Georreferenciación GPS ("Estoy Aquí")
-      useEffect(() => {
-        const map = mapInstanceRef.current;
-        if (!map) return;
-
-        // Limpiar el marcador GPS anterior
-        if (gpsMarkerRef.current) {
-          map.removeLayer(gpsMarkerRef.current);
-          gpsMarkerRef.current = null;
-        }
-
-        if (userLocation) {
-          const gpsIcon = L.divIcon({
-            className: 'user-location-pulsing',
-            html: `<div style="
-              background-color: #2563eb; 
-              width: 18px; 
-              height: 18px; 
-              border-radius: 50%; 
-              border: 3px solid white; 
-              box-shadow: 0 0 12px rgba(37,99,235,0.8);
-            "></div>`,
-            iconSize: [18, 18],
-            iconAnchor: [9, 9]
-          });
-
-          const gpsMarker = L.marker(userLocation, { icon: gpsIcon }).addTo(map);
-          gpsMarker.bindTooltip("Estoy Aquí / Punto de Partida", {
-            permanent: true,
-            direction: 'bottom',
-            className: 'custom-map-label',
-            offset: [0, 10]
-          });
-
-          gpsMarkerRef.current = gpsMarker;
-          map.setView(userLocation, isTouristMode ? 11 : 14);
-        }
-      }, [userLocation]);
-
-      // 4. Centrado de cámara para elementos seleccionados
-      useEffect(() => {
-        const map = mapInstanceRef.current;
-        if (activeMarker && map && markersRef.current[activeMarker]) {
-          const marker = markersRef.current[activeMarker];
-          map.setView(marker.getLatLng(), isTouristMode ? 11.5 : 14.5);
-          marker.openPopup();
-        }
-      }, [activeMarker]);
-
-      return (
-        <div className="relative">
-          <div id="map" className="shadow-inner border border-neutral-200"></div>
-          
-          {/* Botón Flotante de GPS */}
-          <button
-            onClick={onTriggerGPS}
-            className="absolute bottom-5 right-5 z-[1000] bg-blue-600 hover:bg-blue-700 text-white font-extrabold px-4 py-2.5 rounded-xl shadow-lg border border-blue-500 transition-all flex items-center gap-2 text-xs md:text-sm uppercase tracking-wider"
-          >
-            <span>🎯</span> ¿Dónde estoy?
-          </button>
-        </div>
-      );
-    }
-
     // --- COMPONENTE PRINCIPAL ---
     function App() {
       const [searchTerm, setSearchTerm] = useState("");
@@ -725,12 +442,12 @@
       const [qrDestination, setQrDestination] = useState("https://cuadrobenegas.com.ar");
       const [showConfig, setShowConfig] = useState(false);
 
-      // --- ESTADOS NUEVOS PARA LA GALERÍA Y ADMINISTRACIÓN ---
+      // --- ESTADOS DE LAS VENTANAS MODALES ---
       const [isInformeOpen, setIsInformeOpen] = useState(false);
       const [isGaleriaOpen, setIsGaleriaOpen] = useState(false);
       const [galeriaTab, setGaleriaTab] = useState("reinas"); // 'reinas' o 'lugares'
       
-      // Control de Administradora Única
+      // Control de Administradora Única (Clave privada: admin2026)
       const [isAdmin, setIsAdmin] = useState(() => {
         const saved = localStorage.getItem("cb_admin_session");
         return saved === "true";
@@ -739,13 +456,13 @@
       const [passwordInput, setPasswordInput] = useState("");
       const [loginError, setLoginError] = useState("");
 
-      // Lista de fotos con persistencia local
+      // Lista de fotos con persistencia local en tu navegador
       const [fotosList, setFotosList] = useState(() => {
         const saved = localStorage.getItem("cb_galeria_fotos");
         return saved ? JSON.parse(saved) : defaultGaleriaFotos;
       });
 
-      // Nuevo formulario de subida (Solo visible para Admin)
+      // Nuevo formulario de subida (Solo visible para la Administradora)
       const [nuevaFotoTitulo, setNuevaFotoTitulo] = useState("");
       const [nuevaFotoUrl, setNuevaFotoUrl] = useState("");
 
@@ -804,7 +521,7 @@
         return matchesSearch && item.categoria === activeCategory;
       });
 
-      // Disparador del Geolocalizador GPS
+      // Disparador del Geolocalizador GPS ("Estoy Aquí")
       const triggerGPSLocation = () => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -904,10 +621,9 @@
         setActiveMarkerId(id);
       };
 
-      // --- FUNCIONES DE GESTIÓN DE GALERÍA (ADMINISTRADORA) ---
+      // --- FUNCIONES DE GESTIÓN DE GALERÍA (ADMINISTRADORA ÚNICA) ---
       const handleLoginAdmin = (e) => {
         e.preventDefault();
-        // Clave de administrador segura por defecto para vos
         if (passwordInput === "admin2026") {
           setIsAdmin(true);
           localStorage.setItem("cb_admin_session", "true");
@@ -964,15 +680,15 @@
             </div>
             
             <div className="flex items-center gap-2">
-              {/* BOTÓN HISTÓRICO INTEGRADO DE REACT COHERENTE */}
+              {/* BOTÓN HISTÓRICO INTEGRADO */}
               <button
                 onClick={() => setIsInformeOpen(true)}
                 className="flex items-center gap-2 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-stone-950 text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 uppercase"
               >
-                📖 Historia, Presente y Futuro 
+                📖 Historia, Presente y Futuro CB
               </button>
 
-              {/* BOTÓN NUEVO: GALERÍA DE REINAS Y PAISAJES */}
+              {/* BOTÓN GALERÍA DE REINAS Y PAISAJES */}
               <button
                 onClick={() => setIsGaleriaOpen(true)}
                 className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 uppercase"
@@ -982,7 +698,7 @@
 
               <button
                 onClick={openPrintWindow}
-                className="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 border border-neutral-750"
+                className="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 border border-neutral-750 animate-pulse"
               >
                 🖨️ Imprimir Folleto
               </button>
@@ -1380,8 +1096,8 @@
                   <div>
                     <span className="text-emerald-500 text-[10px] uppercase tracking-widest font-black block">Patrimonio Cultural y Humano</span>
                     <h2 className="font-bold text-sm md:text-base flex items-center gap-2">
-                      📸 Galería Comunitaria de Cuadro Benegas
-                      {isAdmin && <span className="bg-amber-500 text-stone-950 text-[9px] px-2 py-0.5 rounded font-black tracking-widest">PERFIL ADMINISTRADORA</span>}
+                      📸 Galería de Reinas y Paisajes de Cuadro Benegas
+                      {isAdmin && <span className="bg-amber-500 text-stone-950 text-[9px] px-2 py-0.5 rounded font-black tracking-widest animate-pulse">ADMINISTRADORA</span>}
                     </h2>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1398,7 +1114,7 @@
                         onClick={handleLogoutAdmin} 
                         className="bg-red-950 hover:bg-red-900 text-red-400 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-500/25 transition-all"
                       >
-                        🚪 Salir de Admin
+                        🚪 Cerrar Sesión
                       </button>
                     )}
                     
@@ -1424,31 +1140,31 @@
                       onClick={() => setGaleriaTab("lugares")}
                       className={`px-6 py-2 rounded-lg text-xs font-extrabold transition-all uppercase tracking-wider ${galeriaTab === 'lugares' ? 'bg-emerald-600 text-white shadow-sm' : 'text-neutral-600 hover:text-neutral-950'}`}
                     >
-                      🌲 Lugares y Paisajes
+                      🌲 Paisajes y Lugares Bonitos
                     </button>
                   </div>
                   
                   <div className="text-xs text-neutral-500 font-medium hidden sm:block">
-                    Total: {fotosList.filter(f => f.categoria === galeriaTab).length} registros
+                    Total: {fotosList.filter(f => f.categoria === galeriaTab).length} fotos
                   </div>
                 </div>
 
-                {/* Cuerpo del Modal: Dividido si es Administradora para mostrar formulario de subida */}
+                {/* Cuerpo de la Galería */}
                 <div className="flex-grow overflow-y-auto p-6 bg-neutral-50 flex flex-col md:flex-row gap-6">
                   
                   {/* Formulario de Carga: Visible ÚNICAMENTE para Administradora */}
                   {isAdmin && (
                     <div className="w-full md:w-80 bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm h-fit flex-shrink-0">
                       <h3 className="text-sm font-extrabold text-stone-900 border-b border-emerald-500 pb-2 mb-4 flex items-center gap-1.5">
-                        <span>➕ Subir Registro</span>
+                        <span>➕ Subir Nueva Foto</span>
                       </h3>
                       
                       <form onSubmit={handleSubirFoto} className="space-y-4">
                         <div>
-                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Título de la Fotografía</label>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Título de la Foto / Año</label>
                           <input 
                             type="text" 
-                            placeholder="Ej: Reina 1998, Puente Colorado..." 
+                            placeholder="Ej: Reina Vendimial 2026, Valle Grande..." 
                             className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                             value={nuevaFotoTitulo}
                             onChange={(e) => setNuevaFotoTitulo(e.target.value)}
@@ -1456,21 +1172,21 @@
                         </div>
 
                         <div>
-                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">URL / Link Web de la Imagen</label>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Enlace directo de la Imagen</label>
                           <input 
                             type="text" 
-                            placeholder="https://enlace-de-tu-imagen.jpg" 
+                            placeholder="https://i.imgur.com/tu-imagen.jpg" 
                             className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                             value={nuevaFotoUrl}
                             onChange={(e) => setNuevaFotoUrl(e.target.value)}
                           />
                           <span className="text-[9px] text-neutral-400 block mt-1 leading-relaxed">
-                            💡 Tip: Podés usar hosting gratis de imágenes (como imgur, postimages) y pegar el enlace directo aquí.
+                            💡 Usa servicios gratuitos como <strong>postimages.org</strong> o <strong>imgur.com</strong> para subir tus fotos y pega el enlace directo que termina en .jpg o .png aquí.
                           </span>
                         </div>
 
                         <div>
-                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Destino de la foto</label>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Destino de publicación</label>
                           <div className="text-xs font-extrabold text-neutral-800 bg-neutral-100 px-3 py-2 rounded-lg border border-neutral-200">
                             {galeriaTab === "reinas" ? "👑 Pestaña de Reinas" : "🌲 Pestaña de Lugares"}
                           </div>
@@ -1486,7 +1202,7 @@
                     </div>
                   )}
 
-                  {/* Cuadrícula de Fotos de la Categoría Activa */}
+                  {/* Cuadrícula de fotos */}
                   <div className="flex-grow">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                       {fotosList
@@ -1499,17 +1215,17 @@
                                 src={foto.url} 
                                 alt={foto.titulo} 
                                 className="w-full h-full object-cover group-hover:scale-105 transition-all duration-350"
-                                onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Foto+No+Encontrada'; }}
+                                onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Foto+No+Disponible'; }}
                               />
                               
                               {/* Botón de Borrar: Visible SOLO para ti como Administradora */}
                               {isAdmin && (
                                 <button 
                                   onClick={() => handleEliminarFoto(foto.id)}
-                                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg shadow-lg border border-red-500 transition-all font-bold text-xs"
-                                  title="Eliminar esta foto de la galería"
+                                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg shadow-lg border border-red-500 transition-all font-bold text-xs"
+                                  title="Eliminar esta foto"
                                 >
-                                  🗑️ Borrar
+                                  🗑️ Eliminar
                                 </button>
                               )}
                             </div>
@@ -1517,7 +1233,7 @@
                             <div className="p-4 bg-white border-t border-neutral-100 flex-grow">
                               <h4 className="font-extrabold text-neutral-900 text-sm leading-snug">{foto.titulo}</h4>
                               <span className="text-[10px] text-neutral-400 font-bold block mt-1 uppercase tracking-widest">
-                                {foto.categoria === "reinas" ? "👑 Representante Vendimial" : "🌲 Paisaje de Cuadro Benegas"}
+                                {foto.categoria === "reinas" ? "👑 Representante Vendimial" : "🌲 Paisaje o Hito Local"}
                               </span>
                             </div>
 
@@ -1531,8 +1247,8 @@
                         <h4 className="font-extrabold text-neutral-800 mt-3">Sin imágenes en esta pestaña</h4>
                         <p className="text-xs text-neutral-500 max-w-xs mx-auto mt-1 leading-relaxed">
                           {isAdmin 
-                            ? "Utiliza el formulario de la izquierda para subir la primera imagen del archivo del distrito." 
-                            : "Próximamente la administradora subirá registros del patrimonio de nuestro distrito."}
+                            ? "Utiliza el formulario de la izquierda para subir la primera imagen." 
+                            : "Próximamente se subirán registros a esta categoría."}
                         </p>
                       </div>
                     )}
@@ -1561,7 +1277,7 @@
                   <span className="text-3xl block">🔑</span>
                   <h3 className="font-black text-lg text-neutral-950 mt-2">Acceso de Administradora</h3>
                   <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
-                    Escribe la contraseña para desbloquear las herramientas de subida y eliminación de imágenes.
+                    Escribe la contraseña secreta para habilitar la subida y borrado de imágenes de reinas y paisajes.
                   </p>
                 </div>
 
@@ -1570,7 +1286,7 @@
                     <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Contraseña Privada</label>
                     <input 
                       type="password" 
-                      placeholder="Escribe la clave" 
+                      placeholder="Escribe tu clave" 
                       className="w-full px-3 py-2.5 border border-neutral-300 rounded-xl text-center font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                       value={passwordInput}
                       onChange={(e) => setPasswordInput(e.target.value)}
