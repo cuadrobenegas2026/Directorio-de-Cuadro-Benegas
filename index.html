@@ -390,7 +390,7 @@
       { id: 118, nombre: "Pueblo Punta de Agua", categoria: "pueblos", subtexto: "Vertientes naturales", coords: [-35.52286679896856469, -68.08238907103442727] },
       { id: 119, nombre: "Observatorio Pierre Auger", categoria: "cultura", subtexto: "Ciencia de rayos cósmicos", coords: [-35.29202258493646127, -69.01196505785975432] },
       { id: 120, nombre: "Castillo de Pincheira", categoria: "naturaleza", subtexto: "Formaciones rocosas emblemáticas", coords: [-35.51789756046086666, -69.79383200754887184] },
-      { id: 121, nombre: "Parque Arqueológico Las Tinajas", categoria: "cultura", subtexto: "Arte rupestre y senderos naturales", coords: [-34.75121171308300916, -68.4726901071655476] },
+      { id: 121, font: "bold", nombre: "Parque Arqueológico Las Tinajas", categoria: "cultura", subtexto: "Arte rupestre y senderos naturales", coords: [-34.75121171308300916, -68.4726901071655476] },
       { id: 122, nombre: "Pozos de Las Ánimas", categoria: "naturaleza", subtexto: "Dos dolinas de agua verde esmeralda", coords: [-35.18961645422203333, -69.99958156903220186] },
       { id: 123, nombre: "Parador El Desvío", categoria: "pueblos", subtexto: "Punto de ruta tradicional", coords: [-34.85038934951371203, -68.69549880337673642] },
       { id: 124, nombre: "Refugio La Faja", categoria: "naturaleza", subtexto: "Refugio de montañismo", coords: [-34.53162693962244134, -69.26940020203875292] },
@@ -406,8 +406,8 @@
       { id: 134, nombre: "Mirador Cañón del Atuel", categoria: "cultura", subtexto: "Panorámica de formaciones geológicas", coords: [-35.02000626263948391, -68.67462731712480206] },
       { id: 135, nombre: "Ciudad de General Alvear", categoria: "pueblos", subtexto: "Centro urbano de la región", coords: [-34.97332366343093923, -67.69877962745397326] },
       { id: 136, nombre: "Rincón del Indio", categoria: "cultura", subtexto: "Sitio patrimonial geográfico", coords: [-34.86530110962613094, -67.7858906778562158] },
-      { id: 137, font: "bold", nombre: "El Escorial Camping", categoria: "naturaleza", subtexto: "Alojamiento agreste e hidroeléctrico", coords: [-34.7618070575724758, -68.32904660551044174] },
-      { id: 138, nombre: "Bajo Rosado", categoria: "naturaleza", subtexto: "Formaciones de arcilla rojiza", coords: [-34.57186192678135939, -68.77896697262974612] },
+      { id: 137, nombre: "El Escorial Camping", categoria: "naturaleza", subtexto: "Alojamiento agreste e hidroeléctrico", coords: [-34.7618070575724758, -68.32904660551044174] },
+      { id: 138, font: "bold", nombre: "Bajo Rosado", categoria: "naturaleza", subtexto: "Formaciones de arcilla rojiza", coords: [-34.57186192678135939, -68.77896697262974612] },
       { id: 139, nombre: "Mirador de Lago", categoria: "cultura", subtexto: "Postal del Embalse Los Reyunos", coords: [-34.6013384309971741, -68.6401844427735881] },
       { id: 140, nombre: "Embalse Valle Grande", categoria: "agua", subtexto: "Epicentro de turismo aventura", coords: [-34.83871073288879217, -68.51421003727902814] },
       { id: 141, nombre: "Caverna de Las Brujas", categoria: "naturaleza", subtexto: "Estalactitas subterráneas", coords: [-35.80157453555702318, -69.81923223469685524] },
@@ -421,6 +421,14 @@
       { id: 149, nombre: "Dique El Tigre", categoria: "agua", subtexto: "Compensador de Los Reyunos", coords: [-34.60739201487837846, -68.61314158271856911] },
       { id: 150, nombre: "Dique Derivador Galileo Vitale", categoria: "agua", subtexto: "Primera obra hídrica sobre el Río Atuel", coords: [-34.59134141636526749, -68.56026570573556] },
       { id: 151, nombre: "Embalse El Nihuil (Mirador Superior)", categoria: "agua", subtexto: "Panorámica del murallón y vertedero", coords: [-35.02679486249171958, -68.67851658900485745] }
+    ];
+
+    // Datos iniciales de altísima calidad para la Galería de Reinas y Paisajes
+    const defaultGaleriaFotos = [
+      { id: "g1", titulo: "Soberana Vendimial de Cuadro Benegas", categoria: "reinas", url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop" },
+      { id: "g2", titulo: "Nuestra Representante e Ilusión", categoria: "reinas", url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop" },
+      { id: "g3", titulo: "Puente Colorado - Patrimonio del Distrito", categoria: "lugares", url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop" },
+      { id: "g4", titulo: "Atardecer de Viñedos bajo la Cordillera", categoria: "lugares", url: "https://images.unsplash.com/photo-1516589178571-6af773aaa360?w=800&auto=format&fit=crop" }
     ];
 
     // Iconos vectoriales de hermosa calidad visual para el listado de comercios
@@ -631,7 +639,7 @@
 
         markersRef.current = currentMarkers;
 
-        // Auto-zoom ajustado para englobar el dataset correspondiente
+        // Ajustar el zoom automático según los marcadores presentes
         if (data.length > 0) {
           const latLngs = data.filter(item => item.coords).map(item => item.coords);
           if (latLngs.length > 0) {
@@ -706,7 +714,7 @@
       );
     }
 
-    // --- COMPONENTE PRINCIPAL (Unifica Directorio de Empresas y Mapa Turístico) ---
+    // --- COMPONENTE PRINCIPAL ---
     function App() {
       const [searchTerm, setSearchTerm] = useState("");
       const [viewMode, setViewMode] = useState("lista"); // 'lista', 'mapa_empresas', 'mapa_turistico'
@@ -717,8 +725,33 @@
       const [qrDestination, setQrDestination] = useState("https://cuadrobenegas.com.ar");
       const [showConfig, setShowConfig] = useState(false);
 
-      // Estado de React para controlar la apertura de la ventana flotante del Informe HTML
+      // --- ESTADOS PARA VENTANAS MODALES ---
       const [isInformeOpen, setIsInformeOpen] = useState(false);
+      const [isGaleriaOpen, setIsGaleriaOpen] = useState(false);
+      const [galeriaTab, setGaleriaTab] = useState("reinas"); // 'reinas' o 'lugares'
+      
+      // Control de Administradora Única (Clave privada: admin2026)
+      const [isAdmin, setIsAdmin] = useState(() => {
+        const saved = localStorage.getItem("cb_admin_session");
+        return saved === "true";
+      });
+      const [showLoginModal, setShowAdminLoginModal] = useState(false);
+      const [passwordInput, setPasswordInput] = useState("");
+      const [loginError, setLoginError] = useState("");
+
+      // Lista de fotos con persistencia local en el navegador
+      const [fotosList, setFotosList] = useState(() => {
+        const saved = localStorage.getItem("cb_galeria_fotos");
+        return saved ? JSON.parse(saved) : defaultGaleriaFotos;
+      });
+
+      // Nuevo formulario de subida (Solo visible para la Administradora)
+      const [nuevaFotoTitulo, setNuevaFotoTitulo] = useState("");
+      const [nuevaFotoUrl, setNuevaFotoUrl] = useState("");
+
+      useEffect(() => {
+        localStorage.setItem("cb_galeria_fotos", JSON.stringify(fotosList));
+      }, [fotosList]);
 
       useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -780,14 +813,12 @@
               setUserLocation(currentPos);
             },
             (error) => {
-              // Si no hay permisos o GPS desactivado, lo fijamos por defecto en la Delegación Municipal Cuadro Benegas
               const fallbackPos = [-34.620107, -68.454924];
               setUserLocation(fallbackPos);
               alert("No se pudo obtener el GPS en vivo. Hemos fijado su ubicación de partida en la Delegación Municipal de Cuadro Benegas.");
             }
           );
         } else {
-          // Fallback para navegadores antiguos
           const fallbackPos = [-34.620107, -68.454924];
           setUserLocation(fallbackPos);
         }
@@ -873,6 +904,53 @@
         setActiveMarkerId(id);
       };
 
+      // --- GESTIÓN DE GALERÍA (ADMINISTRADORA ÚNICA) ---
+      const handleLoginAdmin = (e) => {
+        e.preventDefault();
+        if (passwordInput === "admin2026") {
+          setIsAdmin(true);
+          localStorage.setItem("cb_admin_session", "true");
+          setShowAdminLoginModal(false);
+          setPasswordInput("");
+          setLoginError("");
+        } else {
+          setLoginError("Contraseña incorrecta. Inténtalo de nuevo.");
+        }
+      };
+
+      const handleLogoutAdmin = () => {
+        if (window.confirm("¿Deseas cerrar tu sesión de Administradora?")) {
+          setIsAdmin(false);
+          localStorage.setItem("cb_admin_session", "false");
+        }
+      };
+
+      const handleSubirFoto = (e) => {
+        e.preventDefault();
+        if (!nuevaFotoTitulo.trim() || !nuevaFotoUrl.trim()) {
+          alert("Por favor, completa todos los campos.");
+          return;
+        }
+
+        const nuevaFoto = {
+          id: "custom_" + Date.now(),
+          titulo: nuevaFotoTitulo,
+          categoria: galeriaTab,
+          url: nuevaFotoUrl
+        };
+
+        setFotosList([nuevaFoto, ...fotosList]);
+        setNuevaFotoTitulo("");
+        setNuevaFotoUrl("");
+        alert("¡Foto publicada con éxito en la categoría " + (galeriaTab === "reinas" ? "Reinas" : "Paisajes") + "!");
+      };
+
+      const handleEliminarFoto = (id) => {
+        if (window.confirm("¿Segura que deseas eliminar esta fotografía de la galería?")) {
+          setFotosList(fotosList.filter(f => f.id !== id));
+        }
+      };
+
       return (
         <div className="flex flex-col min-h-screen">
           
@@ -884,19 +962,28 @@
               </span>
             </div>
             
-            <div className="flex items-center gap-2">
-              {/* BOTÓN HISTÓRICO INTEGRADO DE REACT COHERENTE */}
+            <div className="flex items-center gap-3">
+              {/* BOTÓN HISTÓRICO INTEGRADO EN EL MENÚ SUPERIOR DE FORMA RESPONSIVA */}
               <button
                 onClick={() => setIsInformeOpen(true)}
-                className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 hover:bg-amber-600 text-stone-950 text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 uppercase"
+                className="flex items-center gap-2 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-stone-950 text-[11px] md:text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 uppercase"
               >
-                📖 Historia, Pasado, Presente y Futuro CB
+                📖 Historia, Presente y Futuro CB
               </button>
+
+              {/* BOTÓN DE LA GALERÍA COMUNITARIA */}
+              <button
+                onClick={() => setIsGaleriaOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] md:text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 uppercase"
+              >
+                📷 Galería de Fotos
+              </button>
+
               <button
                 onClick={openPrintWindow}
-                className="flex items-center gap-2 px-4 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 border border-neutral-750"
+                className="flex items-center gap-2 px-3 py-1.5 bg-neutral-850 hover:bg-neutral-800 text-neutral-300 text-[11px] md:text-xs font-extrabold rounded-lg shadow-sm transition-all duration-150 border border-neutral-700"
               >
-                🖨️ Imprimir Folleto Comercial
+                🖨️ Imprimir
               </button>
             </div>
           </div>
@@ -983,7 +1070,7 @@
                 </button>
               </div>
             ) : (
-              <div className="flex flex-wrap justify-center gap-2 mb-8 no-print">
+              <div className="flex flex-wrap justify-center gap-2 mb-8 no-print animate-fade-in">
                 <button onClick={() => setActiveCategory("todos")} className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeCategory === "todos" ? "bg-indigo-650 text-white shadow-md" : "bg-white text-neutral-600 hover:bg-neutral-50"}`}>
                   📋 Todos los Atractivos
                 </button>
@@ -1248,7 +1335,9 @@
 
           </main>
 
-          {/* VENTANA MODAL FLOTANTE (IFRAME) PARA EL INFORME HISTÓRICO */}
+          {/* ========================================================== */}
+          {/* VENTANA MODAL FLOTANTE (IFRAME) PARA EL INFORME HISTÓRICO   */}
+          {/* ========================================================== */}
           {isInformeOpen && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
               <div className="bg-white w-full max-w-5xl h-[88vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200">
@@ -1276,6 +1365,230 @@
                   ></iframe>
                 </div>
                 
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================== */}
+          {/* VENTANA MODAL FLOTANTE INTERACTIVA: GALERÍA COMUNITARIA   */}
+          {/* ========================================================== */}
+          {isGaleriaOpen && (
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[99999] flex items-center justify-center p-4">
+              <div className="bg-white w-full max-w-5xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200">
+                
+                {/* Cabecera de la Galería */}
+                <div className="bg-neutral-900 text-white p-4 flex justify-between items-center">
+                  <div>
+                    <span className="text-emerald-500 text-[10px] uppercase tracking-widest font-black block">Patrimonio Cultural y Humano</span>
+                    <h2 className="font-bold text-sm md:text-base flex items-center gap-2">
+                      📸 Galería de Reinas y Paisajes de Cuadro Benegas
+                      {isAdmin && <span className="bg-amber-500 text-stone-950 text-[9px] px-2 py-0.5 rounded font-black tracking-widest animate-pulse">ADMINISTRADORA</span>}
+                    </h2>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {/* Botón de Acceso Admin */}
+                    {!isAdmin ? (
+                      <button 
+                        onClick={() => setShowAdminLoginModal(true)} 
+                        className="bg-neutral-800 hover:bg-neutral-700 text-amber-500 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/25 transition-all"
+                      >
+                        🔑 Acceso Admin
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={handleLogoutAdmin} 
+                        className="bg-red-950 hover:bg-red-900 text-red-400 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-500/25 transition-all"
+                      >
+                        🚪 Cerrar Sesión
+                      </button>
+                    )}
+                    
+                    <button 
+                      onClick={() => setIsGaleriaOpen(false)} 
+                      className="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm"
+                    >
+                      Cerrar (X)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sub-Tabs de Categoría de la Galería */}
+                <div className="bg-neutral-100 p-3 flex border-b border-neutral-200 justify-between items-center">
+                  <div className="flex bg-white p-1 rounded-xl border border-neutral-200/50 shadow-inner">
+                    <button 
+                      onClick={() => setGaleriaTab("reinas")}
+                      className={`px-6 py-2 rounded-lg text-xs font-extrabold transition-all uppercase tracking-wider ${galeriaTab === 'reinas' ? 'bg-amber-500 text-neutral-950 shadow-sm' : 'text-neutral-600 hover:text-neutral-950'}`}
+                    >
+                      👑 Reinas de la Vendimia
+                    </button>
+                    <button 
+                      onClick={() => setGaleriaTab("lugares")}
+                      className={`px-6 py-2 rounded-lg text-xs font-extrabold transition-all uppercase tracking-wider ${galeriaTab === 'lugares' ? 'bg-emerald-600 text-white shadow-sm' : 'text-neutral-600 hover:text-neutral-950'}`}
+                    >
+                      🌲 Paisajes y Lugares Bonitos
+                    </button>
+                  </div>
+                  
+                  <div className="text-xs text-neutral-500 font-medium hidden sm:block">
+                    Total: {fotosList.filter(f => f.categoria === galeriaTab).length} fotos
+                  </div>
+                </div>
+
+                {/* Cuerpo de la Galería */}
+                <div className="flex-grow overflow-y-auto p-6 bg-neutral-50 flex flex-col md:flex-row gap-6">
+                  
+                  {/* Formulario de Carga: Visible ÚNICAMENTE para Administradora */}
+                  {isAdmin && (
+                    <div className="w-full md:w-80 bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm h-fit flex-shrink-0">
+                      <h3 className="text-sm font-extrabold text-stone-900 border-b border-emerald-500 pb-2 mb-4 flex items-center gap-1.5">
+                        <span>➕ Subir Nueva Foto</span>
+                      </h3>
+                      
+                      <form onSubmit={handleSubirFoto} className="space-y-4">
+                        <div>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Título de la Foto / Año</label>
+                          <input 
+                            type="text" 
+                            placeholder="Ej: Reina Vendimial 2026, Valle Grande..." 
+                            className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            value={nuevaFotoTitulo}
+                            onChange={(e) => setNuevaFotoTitulo(e.target.value)}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Enlace directo de la Imagen</label>
+                          <input 
+                            type="text" 
+                            placeholder="https://i.imgur.com/tu-imagen.jpg" 
+                            className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            value={nuevaFotoUrl}
+                            onChange={(e) => setNuevaFotoUrl(e.target.value)}
+                          />
+                          <span className="text-[9px] text-neutral-400 block mt-1 leading-relaxed">
+                            💡 Usa servicios gratuitos como <strong>postimages.org</strong> o <strong>imgur.com</strong> para subir tus fotos y pega el enlace directo que termina en .jpg o .png aquí.
+                          </span>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Destino de publicación</label>
+                          <div className="text-xs font-extrabold text-neutral-800 bg-neutral-100 px-3 py-2 rounded-lg border border-neutral-200">
+                            {galeriaTab === "reinas" ? "👑 Pestaña de Reinas" : "🌲 Pestaña de Lugares"}
+                          </div>
+                        </div>
+
+                        <button 
+                          type="submit" 
+                          className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs uppercase tracking-wider rounded-lg transition-all shadow-md shadow-emerald-700/20"
+                        >
+                          Publicar Imagen
+                        </button>
+                      </form>
+                    </div>
+                  )}
+
+                  {/* Cuadrícula de fotos */}
+                  <div className="flex-grow">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {fotosList
+                        .filter(foto => foto.categoria === galeriaTab)
+                        .map(foto => (
+                          <div key={foto.id} className="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 relative group flex flex-col justify-between">
+                            
+                            <div className="h-44 overflow-hidden relative bg-neutral-100">
+                              <img 
+                                src={foto.url} 
+                                alt={foto.titulo} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-350"
+                                onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Foto+No+Disponible'; }}
+                              />
+                              
+                              {/* Botón de Borrar: Visible SOLO para ti como Administradora */}
+                              {isAdmin && (
+                                <button 
+                                  onClick={() => handleEliminarFoto(foto.id)}
+                                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded-lg shadow-lg border border-red-500 transition-all font-bold text-xs"
+                                  title="Eliminar esta foto"
+                                >
+                                  🗑️ Eliminar
+                                </button>
+                              )}
+                            </div>
+
+                            <div className="p-4 bg-white border-t border-neutral-100 flex-grow">
+                              <h4 className="font-extrabold text-neutral-900 text-sm leading-snug">{foto.titulo}</h4>
+                              <span className="text-[10px] text-neutral-400 font-bold block mt-1 uppercase tracking-widest">
+                                {foto.categoria === "reinas" ? "👑 Representante Vendimial" : "🌲 Paisaje o Hito Local"}
+                              </span>
+                            </div>
+
+                          </div>
+                        ))}
+                    </div>
+
+                    {fotosList.filter(f => f.categoria === galeriaTab).length === 0 && (
+                      <div className="text-center py-16 bg-white border border-neutral-200 rounded-2xl shadow-inner">
+                        <span className="text-4xl">📸</span>
+                        <h4 className="font-extrabold text-neutral-800 mt-3">Sin imágenes en esta pestaña</h4>
+                        <p className="text-xs text-neutral-500 max-w-xs mx-auto mt-1 leading-relaxed">
+                          {isAdmin 
+                            ? "Utiliza el formulario de la izquierda para subir la primera imagen." 
+                            : "Próximamente se subirán registros a esta categoría."}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================== */}
+          {/* MODAL SECRETO DE CONTROL DE ACCESO (ADMINISTRADORA)       */}
+          {/* ========================================================== */}
+          {showLoginModal && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100000] flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl p-6 w-full max-w-sm border border-neutral-200 shadow-2xl relative">
+                <button 
+                  onClick={() => { setShowAdminLoginModal(false); setLoginError(""); }} 
+                  className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 font-extrabold"
+                >
+                  ✕
+                </button>
+                
+                <div className="text-center mb-6">
+                  <span className="text-3xl block">🔑</span>
+                  <h3 className="font-black text-lg text-neutral-950 mt-2">Acceso de Administradora</h3>
+                  <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
+                    Escribe la contraseña secreta para habilitar la subida y borrado de imágenes de reinas y paisajes.
+                  </p>
+                </div>
+
+                <form onSubmit={handleLoginAdmin} className="space-y-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Contraseña Privada</label>
+                    <input 
+                      type="password" 
+                      placeholder="Escribe tu clave" 
+                      className="w-full px-3 py-2.5 border border-neutral-300 rounded-xl text-center font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                    />
+                  </div>
+
+                  {loginError && (
+                    <p className="text-xs text-red-600 text-center font-semibold animate-pulse">{loginError}</p>
+                  )}
+
+                  <button 
+                    type="submit" 
+                    className="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-stone-950 font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md"
+                  >
+                    Verificar Clave
+                  </button>
+                </form>
               </div>
             </div>
           )}
