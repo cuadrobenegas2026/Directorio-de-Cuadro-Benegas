@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directorio Comercial e Hitos Turísticos - Cuadro Benegas</title>
+  
+  <!-- Tailwind CSS para diseño moderno y premium -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React y Babel desde CDN para ejecución dinámica sin fallos -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js" crossorigin="anonymous"></script>
+
+  <!-- Librería QRious para generar códigos QR locales de manera instantánea y offline -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts para tipografía de alta calidad -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* Configuración especial para impresión física de alta calidad sin desperdiciar tinta */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11px !important;
+      }
+      .no-print { 
+        display: none !important; 
+      }
+      .print-full { 
+        width: 100% !important; 
+        max-width: 100% !important; 
+        padding: 0 !important; 
+        margin: 0 !important;
+      }
+      /* Forzar que las tarjetas se impriman en 2 columnas prolijas */
+      .print-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+      }
+      /* Evitar cortes feos a mitad de una tarjeta comercial en las hojas impresas */
+      .print-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        border-radius: 12px !important;
+      }
+      /* Encabezado especial que solo aparece en el papel físico */
+      .print-header-only {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 24px;
+        border-bottom: 2px solid #171717;
+        padding-bottom: 12px;
+      }
+      /* Ajuste de colores para ahorrar tinta y mejorar el contraste en papel */
+      h3, p, span, a {
+        color: #000000 !important;
+      }
+    }
+
+    /* Ocultar el encabezado de papel en la pantalla interactiva */
+    .print-header-only {
+      display: none;
+    }
+
+    /* Estilos de transición suaves */
+    .transition-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-neutral-50 text-neutral-800 min-h-screen selection:bg-amber-500/30 selection:text-neutral-900">
+
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useMemo, useEffect } = React;
+
+    // ==========================================
+    // Configura aquí tu dirección de GitHub Pages para la simulación local:
+    // ==========================================
+    const DIRECCION_GITHUB_PAGES = "https://Directorio-de-Cuadro-Benegas.github.io/Directorio-de-Cuadro-Benegas"; 
+
+    const COMERCIOS_DATA = [
+      {
+        id: 1,
+        nombre: "FOW Fabricio Orlando Winemaker",
+        categoria: "Bodegas",
+        descripcion: "Proyecto vitivinícola de autor dirigido por el enólogo Fabricio Orlando, enfocado en vinos de gran expresión de terroir mendocino.",
+        direccion: "Cuadro Benegas, San Rafael",
+        telefono: "+54 260 455-8899",
+        horario: "Lun a Sáb: 09:00 - 17:00",
+        coordenadas: [-34.650235336399426, -68.40869716102074],
+        imagen: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "fabricioorlando.fow",
+          facebook: "FOW Fabricio Orlando Winemaker",
+          web: "www.fowines.com",
+          email: "contacto@fowines.com"
+        }
+      },
+      {
+        id: 2,
+        nombre: "Bodega Limbo",
+        categoria: "Bodegas",
+        descripcion: "Bodega de concepto innovador y vanguardista, ofreciendo degustaciones guiadas y partidas limitadas de vinos con un carácter único.",
+        direccion: "Ruta Nacional 144, Cuadro Benegas",
+        telefono: "+54 260 440-1122",
+        horario: "Lun a Vie: 09:00 - 16:00",
+        coordenadas: [-34.69982716450487, -68.4170298283249],
+        imagen: "https://images.unsplash.com/photo-1528254847144-425880447ccc?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "limbo.fincaybodega",
+          facebook: "Limbo Finca y Bodega",
+          web: "www.bodegalimbo.com.ar",
+          email: "info@bodegalimbo.com.ar"
+        }
+      },
+      {
+        id: 3,
+        nombre: "Bodega Don Vicente",
+        categoria: "Bodegas",
+        descripcion: "Tradición y pasión familiar en la elaboración de excelentes varietales sanrafaelinos con historia y el inconfundible terroir local.",
+        direccion: "Calle Pedro Vargas s/n, Cuadro Benegas",
+        telefono: "+54 260 443-4455",
+        horario: "Lun a Sáb: 08:30 - 18:00",
+        coordenadas: [-34.63279725829151, -68.41919828231195],
+        imagen: "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "bodegadonvicente",
+          facebook: "Bodega Don Vicente San Rafael",
+          web: "",
+          email: "contacto@bodegadonvicente.com"
+        }
+      },
+      {
+        id: 4,
+        nombre: "Minera Cañada Ancha",
+        categoria: "Servicios",
+        descripcion: "Explotación, procesamiento y distribución de recursos minerales industriales bajo estrictos estándares de seguridad y sustentabilidad.",
+        direccion: "Cuadro Benegas, San Rafael",
+        telefono: "+54 260 442-9900",
+        horario: "Lun a Vie: 08:00 - 17:00",
+        coordenadas: [-34.63116077294368, -68.42012802196055],
+        imagen: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "",
+          facebook: "Minera Cañada Ancha",
+          web: "",
+          email: "contacto@mineracanadaancha.com"
+        }
+      },
+      {
+        id: 5,
+        nombre: "Bodega Finca Cuadro Benegas",
+        categoria: "Bodegas",
+        descripcion: "Vinos distinguidos de partida limitada rodeados de un imponente paisaje natural al pie de la Cordillera de los Andes.",
+        direccion: "Calle Pedro Vargas, Cuadro Benegas",
+        telefono: "+54 260 441-2233",
+        horario: "Lun a Sáb: 09:00 - 18:00",
+        coordenadas: [-34.645511327783225, -68.4198419458254],
+        imagen: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "fincacuadrobenegas",
+          facebook: "Finca Cuadro Benegas",
+          web: "www.fincacuadrobenegas.com",
+          email: "turismo@fincacuadrobenegas.com"
+        }
+      },
+      {
+        id: 6,
+        nombre: "Secadero Dottori SA",
+        categoria: "Servicios",
+        descripcion: "Establecimiento tradicional con amplia trayectoria en el secado de ciruela d'Agen, durazno y frutos de exportación premium.",
+        direccion: "Ruta Nacional 144, Cuadro Benegas",
+        telefono: "+54 260 442-1244",
+        horario: "Lun a Vie: 07:30 - 16:30",
+        coordenadas: [-34.6506406866104, -68.41982977980791],
+        imagen: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "secaderodottori",
+          facebook: "Secadero Dottori SA",
+          web: "www.dottorisa.com.ar",
+          email: "info@dottorisa.com.ar"
+        }
+      },
+      {
+        id: 7,
+        nombre: "Bodega Chayees Bourras",
+        categoria: "Bodegas",
+        descripcion: "Fusión perfecta de viticultura moderna y legado familiar histórico para dar vida a grandes vinos de exportación.",
+        direccion: "Callejón Las Rosas s/n, Cuadro Benegas",
+        telefono: "+54 260 443-8877",
+        horario: "Visitas guiadas con reserva previa",
+        coordenadas: [-34.684859060690286, -68.42575803442331],
+        imagen: "https://images.unsplash.com/photo-1423485910226-e4024aee120b?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "chayeesbourras",
+          facebook: "Bodega Chayees Bourras",
+          web: "www.chayeesbourras.com.ar",
+          email: "ventas@chayeesbourras.com.ar"
+        }
+      },
+      {
+        id: 8,
+        nombre: "Vinos Artesanales Clann Marangi",
+        categoria: "Bodegas",
+        descripcion: "Elaboración artesanal de vinos y licores únicos siguiendo celosamente recetas familiares heredadas de generación en generación.",
+        direccion: "Calle El Vencedor s/n, Cuadro Benegas",
+        telefono: "+54 260 459-3311",
+        horario: "Mar a Dom: 10:00 - 19:00",
+        coordenadas: [-34.63035646300342, -68.44406825565761],
+        imagen: "https://images.unsplash.com/photo-1516594918697-512679702253?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "clannmarangi",
+          facebook: "Vinos Artesanales Clann Marangi",
+          web: "",
+          email: "clannmarangivinos@gmail.com"
+        }
+      },
+      {
+        id: 9,
+        nombre: "Agro Industria Inca SA",
+        categoria: "Servicios",
+        descripcion: "Procesamiento y envasado agroindustrial de primer nivel, especialista en conservas de frutas, pulpas y hortalizas.",
+        direccion: "Ruta Nacional 144, Cuadro Benegas",
+        telefono: "+54 260 442-8811",
+        horario: "Lun a Vie: 08:00 - 17:00",
+        coordenadas: [-34.616929314141736, -68.45092896089],
+        imagen: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "incaconservas",
+          facebook: "Agroindustria Inca SA",
+          web: "www.incasa.com.ar",
+          email: "ventas@incasa.com.ar"
+        }
+      },
+      {
+        id: 10,
+        nombre: "Delegacion Municipal",
+        categoria: "Servicios",
+        descripcion: "Oficina pública de atención comunitaria, trámites vecinales locales, servicios públicos e información general del distrito.",
+        direccion: "Ruta Nacional 144 y Calle El Vencedor",
+        telefono: "+54 260 444-9300",
+        horario: "Lun a Vie: 07:00 - 13:00",
+        coordenadas: [-34.620107059827824, -68.45492457146956],
+        imagen: "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "",
+          facebook: "Delegacion Municipal Cuadro Benegas",
+          web: "www.sanrafael.gov.ar",
+          email: "delegacion.cuadrobenegas@sanrafael.gov.ar"
+        }
+      },
+      {
+        id: 11,
+        nombre: "Gorilka Vodka Artesanal",
+        categoria: "Gastronomía",
+        descripcion: "Destilados artesanales de alta pureza y licores premium espirituosos, elaborados de manera sustentable en nuestro distrito.",
+        direccion: "Cuadro Benegas, San Rafael",
+        telefono: "+54 260 457-4400",
+        horario: "Atención al público con reserva previa",
+        coordenadas: [-34.63154866492775, -68.46226897385353],
+        imagen: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "gorilka_vodka",
+          facebook: "Gorilka Vodka Artesanal",
+          web: "",
+          email: "gorilkadestilados@gmail.com"
+        }
+      },
+      {
+        id: 12,
+        nombre: "Bodega Algodón Wines Estates",
+        categoria: "Bodegas",
+        descripcion: "Exclusivo resort de clase mundial y bodega premium que ofrece hospitalidad de lujo, gastronomía de autor y canchas de golf.",
+        direccion: "Ruta Nacional 144 km 12, Cuadro Benegas",
+        telefono: "+54 260 442-9020",
+        horario: "Todos los días: 09:00 - 20:00",
+        coordenadas: [-34.64662449152744, -68.4618391273974],
+        imagen: "https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "algodonlife",
+          facebook: "Algodon Wine Estates",
+          web: "www.algodonwineestates.com",
+          email: "reservations@algodonwineestates.com"
+        }
+      },
+      {
+        id: 13,
+        nombre: "Miss Olivos Fabrica de Aceite",
+        categoria: "Servicios",
+        descripcion: "Productores locales especializados en aceite de oliva virgen extra de calidad premium. Degustación y venta directa.",
+        direccion: "Ruta Nacional 144, Cuadro Benegas",
+        telefono: "+54 260 451-2299",
+        horario: "Lun a Sáb: 09:00 - 18:00",
+        coordenadas: [-34.643227873598654, -68.47708758851799],
+        imagen: "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "missolivos",
+          facebook: "Miss Olivos",
+          web: "",
+          email: "contacto@missolivos.com.ar"
+        }
+      },
+      {
+        id: 14,
+        nombre: "Bodega Belottini",
+        categoria: "Bodegas",
+        descripcion: "Establecimiento vinícola familiar centenario elaborando vinos varietales nobles con pasión y un profundo respeto a la tierra mendocina.",
+        direccion: "Calle Pedro Vargas s/n, Cuadro Benegas",
+        telefono: "+54 260 443-1100",
+        horario: "Lun a Sáb: 09:00 - 18:30",
+        coordenadas: [-34.60136134592979, -68.50676833915213],
+        imagen: "https://images.unsplash.com/photo-1528254847144-425880447ccc?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "bodegadelottini",
+          facebook: "Bodega Belottini",
+          web: "",
+          email: "belottiniwinery@gmail.com"
+        }
+      },
+      {
+        id: 15,
+        nombre: "GEMsA Generadora Electrica Mendoza SA",
+        categoria: "Servicios",
+        descripcion: "Planta generadora de energía clave para el desarrollo productivo, comercial e industrial de la provincia de Mendoza.",
+        direccion: "Cuadro Benegas, San Rafael",
+        telefono: "+54 260 444-5000",
+        horario: "Atención administrativa: Lun a Vie 08:00 - 16:00",
+        coordenadas: [-34.59965105267344, -68.52861924595577],
+        imagen: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=600&q=80",
+        redes: {
+          instagram: "",
+          facebook: "GEMSA Generadora Electrica Mendoza",
+          web: "www.gemsa.com.ar",
+          email: "contacto@gemsa.com.ar"
+        }
+      }
+    ];
+
+    function App() {
+      const [searchTerm, setSearchTerm] = useState("");
+      const [selectedCategory, setSelectedCategory] = useState("Todos");
+      const [showPrintHelp, setShowPrintHelp] = useState(false);
+      const [showManualUrl, setShowManualUrl] = useState(false);
+      const [qrUrlTarget, setQrUrlTarget] = useState("");
+
+      const categorias = ["Todos", "Bodegas", "Gastronomía", "Servicios"];
+
+      useEffect(() => {
+        if (typeof window !== "undefined") {
+          const currentUrl = window.location.href;
+          // Si estamos en un iframe de desarrollo, forzar por defecto un dominio de producción escaneable y real
+          if (
+            currentUrl.includes("googleusercontent") || 
+            currentUrl.includes("localhost") || 
+            currentUrl.startsWith("file:") ||
+            currentUrl.includes("gemini.google") ||
+            currentUrl.includes("secure")
+          ) {
+            setQrUrlTarget(DIRECCION_GITHUB_PAGES);
+          } else {
+            setQrUrlTarget(currentUrl);
+          }
+        }
+      }, []);
+
+      // Convertimos el destino QR en una imagen Data URL local de alta fidelidad con QRious
+      const qrDataUrl = useMemo(() => {
+        try {
+          if (typeof QRious !== 'undefined') {
+            const qr = new QRious({
+              value: qrUrlTarget || DIRECCION_GITHUB_PAGES,
+              size: 250,
+              level: 'H', // Nivel alto de tolerancia a errores para escaneo móvil veloz
+              background: '#ffffff',
+              foreground: '#000000'
+            });
+            return qr.toDataURL();
+          }
+        } catch (e) {
+          console.error("Fallo QRious nativo, activando fallback de API: ", e);
+        }
+        // Fallback de contingencia súper resistente
+        return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(qrUrlTarget || DIRECCION_GITHUB_PAGES)}`;
+      }, [qrUrlTarget]);
+
+      const handlePrint = () => {
+        try {
+          const printWindow = window.open('', '_blank');
+          if (!printWindow) {
+            setShowPrintHelp(true);
+            return;
+          }
+
+          // Construimos el listado óptimo de tarjetas para el formato A4 físico
+          const itemsHTML = filteredComercios.map(c => `
+            <div class="print-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; background: white; page-break-inside: avoid; break-inside: avoid; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span style="font-size: 9px; font-weight: bold; text-transform: uppercase; color: #d97706; letter-spacing: 0.05em; display: inline-block; margin-bottom: 4px;">${c.categoria}</span>
+                <h3 style="font-size: 13px; font-weight: 800; margin: 0 0 6px 0; color: #111827; line-height: 1.2;">${c.nombre}</h3>
+                <p style="font-size: 11px; color: #4b5563; line-height: 1.4; margin: 0 0 8px 0;">${c.descripcion}</p>
+              </div>
+              <div style="font-size: 10px; color: #374151; border-top: 1px solid #f3f4f6; padding-top: 6px; margin-top: auto;">
+                <p style="margin: 2px 0;">📍 <strong>${c.direccion}</strong></p>
+                ${c.telefono ? `<p style="margin: 2px 0;">📞 ${c.telefono}</p>` : ''}
+                ${c.horario ? `<p style="margin: 2px 0; color: #6b7280;">🕒 ${c.horario}</p>` : ''}
+              </div>
+            </div>
+          `).join('');
+
+          // Inyectamos el HTML al popup incluyendo el QR de acceso móvil en la esquina superior derecha
+          printWindow.document.write(`
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+              <meta charset="UTF-8">
+              <title>Imprimir Directorio Cuadro Benegas</title>
+              <style>
+                body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background-color: white; color: black; margin: 20px; }
+                .header-wrapper { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 24px; }
+                .header-text { flex-grow: 1; }
+                .header-qr { text-align: center; margin-left: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+                .header-qr img { width: 85px; height: 85px; border: 1px solid #e5e7eb; padding: 2px; border-radius: 8px; }
+                .header-qr span { font-size: 8px; font-weight: bold; text-transform: uppercase; margin-top: 4px; color: #111827; letter-spacing: 0.05em; }
+                .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+              </style>
+            </head>
+            <body>
+              <div class="header-wrapper">
+                <div class="header-text">
+                  <h1 style="margin: 0; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: #111827;">Guía Oficial de Empresas, Comercios e Industrias</h1>
+                  <p style="margin: 4px 0 0 0; font-size: 12px; font-weight: 600; color: #4b5563;">Distrito Cuadro Benegas • San Rafael, Mendoza</p>
+                  <p style="margin: 4px 0 0 0; font-size: 10px; color: #9ca3af; font-weight: 500;">Directorio impreso • Total de comercios filtrados: ${filteredComercios.length}</p>
+                </div>
+                <div class="header-qr">
+                  <img src="${qrDataUrl}" alt="Código QR de Acceso Móvil" />
+                  <span>Escaneame</span>
+                </div>
+              </div>
+              <div class="grid">
+                ${itemsHTML}
+              </div>
+              <script>
+                window.onload = function() {
+                  window.focus();
+                  // Esperamos un instante sutil para garantizar renderizado limpio
+                  setTimeout(function() {
+                    window.print();
+                  }, 250);
+                };
+                // Prevenimos el cierre prematuro: Se cierra únicamente cuando el usuario presiona "Imprimir" o "Cancelar"
+                window.onafterprint = function() {
+                  window.close();
+                };
+              <\/script>
+            </body>
+            </html>
+          `);
+          printWindow.document.close();
+        } catch (error) {
+          console.warn("La impresión automatizada de ventana nueva falló, activando manual: ", error);
+          setShowPrintHelp(true);
+        }
+      };
+
+      const filteredComercios = useMemo(() => {
+        return COMERCIOS_DATA.filter(comercio => {
+          const matchesSearch = 
+            comercio.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            comercio.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            comercio.direccion.toLowerCase().includes(searchTerm.toLowerCase());
+          
+          const matchesCategory = selectedCategory === "Todos" || comercio.categoria === selectedCategory;
+          return matchesSearch && matchesCategory;
+        });
+      }, [searchTerm, selectedCategory]);
+
+      const stats = useMemo(() => {
+        const total = COMERCIOS_DATA.length;
+        const bodegas = COMERCIOS_DATA.filter(c => c.categoria === "Bodegas").length;
+        const servicios = COMERCIOS_DATA.filter(c => c.categoria === "Servicios").length;
+        const gastro = COMERCIOS_DATA.filter(c => c.categoria === "Gastronomía").length;
+        return { total, bodegas, servicios, gastro };
+      }, []);
+
+      return (
+        <div className="flex flex-col min-h-screen">
+          
+          {/* HEADER ESPECIAL DE PAPEL - SOLO SE IMPRIME */}
+          <div className="print-header-only">
+            <h1 className="text-2xl font-black tracking-tight uppercase">Guía Oficial de Empresas, Comercios e Industrias</h1>
+            <p className="text-sm font-semibold text-neutral-600">Distrito Cuadro Benegas • San Rafael, Mendoza</p>
+            <p className="text-xs text-neutral-500 mt-1">Directorio impreso • Total de empresas registradas: {stats.total}</p>
+          </div>
+
+          {/* BARRA SUPERIOR (Sticky y Móvil-Friendly) */}
+          <header className="sticky top-0 z-50 bg-neutral-950 border-b border-neutral-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3 no-print text-white">
+            <div className="flex items-center gap-2">
+              <span className="text-[12px] font-black tracking-wider uppercase text-amber-500">Guía Cuadro Benegas</span>
+            </div>
+            <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <a href="./equipamiento_comunitario_cuadro_benegas.html" className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🏥 Equipamiento</a>
+              <a href="./mapa_empresas.html" className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🗺️ Mapa Empresas</a>
+              <a href="./mapa_turistico.html" className="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🌟 Mapa Turístico</a>
+              <a href="./Fotos_Cuadro Benegas.html" className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">📸 Fotos</a>
+            </nav>
+          </header>
+
+          {/* CONTENIDO PRINCIPAL */}
+          <main className="max-w-7xl mx-auto px-4 py-6 flex-grow w-full print-full">
+            
+            {/* PANEL DE BOTONES PRINCIPALES */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-6 no-print">
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedCategory("Todos");
+                }}
+                className="w-full sm:w-auto px-6 py-3 bg-neutral-900 text-white text-xs sm:text-sm font-bold rounded-xl border border-neutral-800 hover:bg-neutral-800 transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                📋 Directorio Completo
+              </button>
+              
+              <a
+                href="./Historia-pasado-Presente-Futuro.html"
+                className="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs sm:text-sm font-black rounded-xl transition-all shadow-md text-center flex items-center justify-center gap-2"
+              >
+                📖 Historia y Futuro
+              </a>
+              
+              <button 
+                onClick={handlePrint} 
+                className="w-full sm:w-auto px-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+              >			  
+                🖨️ Imprimir Directorio
+              </button>
+            </div>
+
+            {/* ESTADÍSTICAS DEL DISTRITO */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 no-print">
+              <div className="bg-white p-4 rounded-xl border border-neutral-200/80 shadow-sm">
+                <span className="text-[10px] font-bold uppercase text-neutral-400 block tracking-wider">Total</span>
+                <span className="text-xl font-extrabold text-neutral-900 block">{stats.total} Comercios</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-neutral-200/80 shadow-sm">
+                <span className="text-[10px] font-bold uppercase text-amber-600 block tracking-wider">Bodegas</span>
+                <span className="text-xl font-extrabold text-neutral-900 block">{stats.bodegas} Establecimientos</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-neutral-200/80 shadow-sm">
+                <span className="text-[10px] font-bold uppercase text-blue-600 block tracking-wider">Servicios / Ind.</span>
+                <span className="text-xl font-extrabold text-neutral-900 block">{stats.servicios} Registrados</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-neutral-200/80 shadow-sm">
+                <span className="text-[10px] font-bold uppercase text-emerald-600 block tracking-wider">Gastronomía</span>
+                <span className="text-xl font-extrabold text-neutral-900 block">{stats.gastro} Locales</span>
+              </div>
+            </div>
+
+            {}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* FILTROS Y BÚSQUEDA */}
+              <div className="lg:col-span-12 space-y-4 no-print">
+                <div className="bg-white p-4 rounded-xl border border-neutral-200/80 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+                  
+                  {/* Caja de Búsqueda */}
+                  <div className="relative w-full md:max-w-md">
+                    <input
+                      type="text"
+                      placeholder="Buscar bodega, industria, servicios, dirección..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                    />
+                    <span className="absolute left-3 top-3 text-neutral-400 text-xs">🔍</span>
+                  </div>
+
+                  {/* Selector de Categorías */}
+                  <div className="flex flex-wrap gap-1 w-full md:w-auto">
+                    {categorias.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                          selectedCategory === cat 
+                            ? "bg-amber-500 text-neutral-950" 
+                            : "bg-neutral-100 hover:bg-neutral-200 text-neutral-600"
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* LISTA DE TARJETAS COMERCIALES (Soporta 2 columnas en impresión) */}
+              <div className="lg:col-span-12">
+                <div className="print-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredComercios.map(comercio => (
+                    <div 
+                      key={comercio.id}
+                      className="print-card bg-white rounded-xl border border-neutral-200/80 overflow-hidden shadow-sm hover:shadow-md transition-card flex flex-col justify-between"
+                    >
+                      {/* Imagen con fallback */}
+                      <div className="relative h-40 bg-neutral-100 no-print">
+                        <img 
+                          src={comercio.imagen} 
+                          alt={comercio.nombre} 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.src = "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80";
+                          }}
+                        />
+                        <span className="absolute top-3 right-3 bg-neutral-950/85 backdrop-blur-xs text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                          {comercio.categoria}
+                        </span>
+                      </div>
+
+                      {/* Cuerpo de la Tarjeta */}
+                      <div className="p-4 flex-grow space-y-2">
+                        <span className="hidden print:inline-block text-[10px] font-bold text-amber-600 uppercase tracking-widest">{comercio.categoria}</span>
+                        <h3 className="font-extrabold text-base text-neutral-900 leading-tight">{comercio.nombre}</h3>
+                        <p className="text-xs text-neutral-500 leading-relaxed font-medium">{comercio.descripcion}</p>
+                        
+                        {/* Detalles de contacto físico */}
+                        <div className="space-y-1 text-[11px] text-neutral-600 pt-2 border-t border-neutral-100">
+                          <p className="flex items-center gap-1.5">
+                            <span>📍</span> <span className="font-semibold">{comercio.direccion}</span>
+                          </p>
+                          {comercio.telefono && (
+                            <p className="flex items-center gap-1.5">
+                              <span>📞</span> <span>{comercio.telefono}</span>
+                            </p>
+                          )}
+                          {comercio.horario && (
+                            <p className="flex items-center gap-1.5 text-neutral-500">
+                              <span>🕒</span> <span>{comercio.horario}</span>
+                            </p>
+                          )}
+                        </div>
+
+                        {/* REDES DIGITALES OFICIALES */}
+                        <div className="flex flex-wrap gap-1.5 pt-3">
+                          {comercio.redes.instagram && (
+                            <a 
+                              href={`https://instagram.com/${comercio.redes.instagram}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="inline-flex items-center gap-1 text-[10px] font-bold bg-pink-50 text-pink-700 hover:bg-pink-100 px-2 py-1 rounded-lg transition-colors no-print"
+                            >
+                              📸 @{comercio.redes.instagram}
+                            </a>
+                          )}
+                          {comercio.redes.facebook && (
+                            <a 
+                              href={`https://facebook.com/search/top?q=${encodeURIComponent(comercio.redes.facebook)}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="inline-flex items-center gap-1 text-[10px] font-bold bg-blue-50 text-blue-700 hover:bg-blue-100 px-2 py-1 rounded-lg transition-colors no-print"
+                            >
+                              👥 {comercio.redes.facebook}
+                            </a>
+                          )}
+                          {comercio.redes.web && (
+                            <a 
+                              href={`https://${comercio.redes.web}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-50 text-amber-700 hover:bg-amber-100 px-2 py-1 rounded-lg transition-colors no-print"
+                            >
+                              🌐 {comercio.redes.web}
+                            </a>
+                          )}
+                          {comercio.redes.email && (
+                            <a 
+                              href={`mailto:${comercio.redes.email}`} 
+                              className="inline-flex items-center gap-1 text-[10px] font-bold bg-neutral-100 text-neutral-700 hover:bg-neutral-200 px-2 py-1 rounded-lg transition-colors no-print"
+                            >
+                              ✉️ {comercio.redes.email}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Botón de Enlace a Google Maps */}
+                      <div className="p-4 pt-0 no-print">
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${comercio.coordenadas[0]},${comercio.coordenadas[1]}`}
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold rounded-lg transition-all shadow-sm flex items-center justify-center gap-1.5"
+                        >
+                          📍 Ver Ubicación en Google Maps
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {filteredComercios.length === 0 && (
+                  <div className="text-center py-16 bg-white rounded-2xl border border-neutral-200 shadow-xs">
+                    <p className="text-sm font-semibold text-neutral-400">No hay comercios cargados con ese filtro en Cuadro Benegas.</p>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+            {/* SECCIÓN DEL NUEVO QR DINÁMICO ESCANEABLE */}
+            {}
+            <div className="mt-8 bg-neutral-900 border border-neutral-800 p-6 rounded-2xl shadow-lg no-print flex flex-col md:flex-row items-center justify-between gap-6 text-white">
+              <div className="space-y-3 flex-grow text-center md:text-left">
+                <span className="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Acceso Móvil Real e Inmediato
+                </span>
+                <h2 className="text-xl font-bold text-white">Llevá el Directorio en tu Teléfono</h2>
+                <p className="text-xs sm:text-sm text-neutral-400 max-w-xl">
+                  Escaneá el código QR de la derecha con la cámara de tu celular. Te detectará automáticamente la dirección de internet para que entres a la web real de forma inmediata.
+                </p>
+                
+                {/* Herramienta para ajustar manualmente la URL del QR */}
+                <div className="pt-2">
+                  <button 
+                    onClick={() => setShowManualUrl(!showManualUrl)}
+                    className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors inline-flex items-center gap-1 font-medium underline"
+                  >
+                    ⚙️ {showManualUrl ? "Ocultar configuración manual de QR" : "Configurar dirección web del QR manualmente"}
+                  </button>
+                  
+                  {showManualUrl && (
+                    <div className="mt-3 p-3 bg-neutral-950 rounded-xl border border-neutral-800 animate-fade-in max-w-md mx-auto md:mx-0">
+                      <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                        URL destino de escaneo:
+                      </label>
+                      <input 
+                        type="text" 
+                        value={qrUrlTarget} 
+                        onChange={(e) => setQrUrlTarget(e.target.value)} 
+                        placeholder={DIRECCION_GITHUB_PAGES}
+                        className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 text-white rounded-lg text-xs font-mono focus:ring-1 focus:ring-amber-500 focus:outline-none"
+                      />
+                      <span className="text-[9px] text-neutral-500 block mt-1 leading-relaxed">
+                        Modificá esta casilla si querés enlazar tu Netlify o hosting específico. ¡El código QR cambiará en tiempo real!
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* El QR Generado localmente y renderizado como Imagen */}
+              <div className="bg-neutral-950 p-4 rounded-xl border border-neutral-800 flex flex-col items-center gap-2 w-48 flex-shrink-0 mx-auto md:mx-0 shadow-inner">
+                <div className="bg-white p-2 rounded-lg">
+                  {qrDataUrl ? (
+                    <img 
+                      src={qrDataUrl} 
+                      alt="Código QR del Directorio" 
+                      className="w-32 h-32 object-contain"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 flex items-center justify-center bg-neutral-100 text-neutral-400 text-xs">
+                      Generando QR...
+                    </div>
+                  )}
+                </div>
+                <div className="text-center mt-1">
+                  <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest block">¡Escaneame con la Cámara!</span>
+                  <span className="text-[8px] text-neutral-400 block mt-0.5 truncate max-w-[150px] font-mono" title={qrUrlTarget}>
+                    {qrUrlTarget.replace('https://', '').replace('http://', '')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </main>
+
+          {/* PIE DE PÁGINA */}
+          <footer className="bg-neutral-900 text-neutral-400 py-6 text-center text-xs border-t border-neutral-800 no-print">
+            <p>Distrito Cuadro Benegas • Guía Oficial de Empresas, Comercios e Industrias</p>
+          </footer>
+
+          {}
+          {/* MODAL DE AYUDA DE IMPRESIÓN (Por si hay bloqueador de ventanas emergentes o se usa desde celular) */}
+          {showPrintHelp && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm no-print p-4 animate-fade-in">
+              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-neutral-100 text-neutral-800 space-y-4">
+                <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+                  <h3 className="font-extrabold text-base text-neutral-900 flex items-center gap-2">
+                    🖨️ Asistente de Impresión de la Guía
+                  </h3>
+                  <button 
+                    onClick={() => setShowPrintHelp(false)}
+                    className="text-neutral-400 hover:text-neutral-600 text-xl font-bold transition-colors"
+                  >
+                    &times;
+                  </button>
+                </div>
+                
+                <div className="space-y-4">
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    Si tu navegador bloqueó la ventana automática de impresión limpia, o si estás usando tu teléfono móvil, podés imprimir todo el folleto optimizado de la siguiente manera:
+                  </p>
+
+                  {/* BLOQUE PARA COMPUTADORAS (PC / LAPTOP) */}
+                  <div className="bg-amber-50/50 border border-amber-200/70 rounded-xl p-3.5 space-y-2">
+                    <p className="text-[10px] font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1">💻 En Computadora:</p>
+                    <div className="flex flex-col gap-1.5 pt-0.5">
+                      <div className="flex items-center justify-between text-xs bg-white py-1.5 px-3 rounded-lg border border-neutral-200 font-semibold">
+                        <span>Windows o Linux:</span>
+                        <kbd className="bg-neutral-100 px-2 py-0.5 rounded border border-neutral-300 shadow-sm font-mono text-[10px]">Ctrl + P</kbd>
+                      </div>
+                      <div className="flex items-center justify-between text-xs bg-white py-1.5 px-3 rounded-lg border border-neutral-200 font-semibold">
+                        <span>Mac / Apple:</span>
+                        <kbd className="bg-neutral-100 px-2 py-0.5 rounded border border-neutral-300 shadow-sm font-mono text-[10px]">Cmd ⌘ + P</kbd>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* NUEVO BLOQUE EXCLUSIVO PARA TELÉFONOS CELULARES */}
+                  <div className="bg-emerald-50/50 border border-emerald-200/70 rounded-xl p-3.5 space-y-2">
+                    <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">📱 En Teléfonos Celulares:</p>
+                    <div className="text-xs space-y-2 text-neutral-700">
+                      
+                      <div className="bg-white p-2.5 rounded-lg border border-neutral-200">
+                        <p className="font-bold text-emerald-700 flex items-center gap-1">🟢 Si usás Android (Chrome):</p>
+                        <ol className="list-decimal pl-4 mt-1 text-[11px] space-y-0.5 text-neutral-600">
+                          <li>Tocá los tres puntitos <strong className="text-neutral-900">⋮</strong> arriba a la derecha del navegador.</li>
+                          <li>Elegí la opción <strong className="text-neutral-900">"Compartir..."</strong></li>
+                          <li>Buscá y tocá el icono de <strong className="text-emerald-800">"Imprimir"</strong> en la lista.</li>
+                        </ol>
+                      </div>
+
+                      <div className="bg-white p-2.5 rounded-lg border border-neutral-200">
+                        <p className="font-bold text-blue-700 flex items-center gap-1">🔵 Si usás iPhone (Safari):</p>
+                        <ol className="list-decimal pl-4 mt-1 text-[11px] space-y-0.5 text-neutral-600">
+                          <li>Tocá el botón de Compartir <strong className="text-neutral-900">📤</strong> abajo al centro de la pantalla.</li>
+                          <li>Deslizá la lista hacia abajo de las opciones.</li>
+                          <li>Seleccioná <strong className="text-blue-800">"Imprimir"</strong>.</li>
+                        </ol>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowPrintHelp(false)}
+                  className="w-full py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold rounded-xl transition-all"
+                >
+                  Entendido, ¡gracias!
+                </button>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
