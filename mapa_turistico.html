@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Turístico Regional Dinámico</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    
+    /* Forzar alturas reales para evitar fallos de renderizado en Leaflet */
+    .wrapper-principal {
+      height: calc(100vh - 80px - 40px); /* Resta header y footer */
+    }
+    #map { 
+      width: 100% !important; 
+      height: 100% !important; 
+      min-height: 400px;
+    }
+    
+    /* Etiquetas flotantes en el mapa para los destinos */
+    .tourist-map-label {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 6px !important;
+      padding: 3px 8px !important;
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
+      white-space: nowrap !important;
+    }
+
+    /* Etiqueta exclusiva para el usuario: fija, visible y llamativa */
+    .user-map-label-fixed {
+      background-color: #2563eb !important;
+      border: 2px solid white !important;
+      border-radius: 8px !important;
+      padding: 4px 10px !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      color: white !important;
+      box-shadow: 0 4px 10px rgba(37,99,235,0.4) !important;
+      white-space: nowrap !important;
+    }
+    .leaflet-tooltip-top.user-map-label-fixed::before {
+      border-top-color: #2563eb !important;
+    }
+
+    /* Animación de pulso para la ubicación en vivo del usuario */
+    @keyframes pulse-user {
+      0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+      100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+    .user-gps-pulse {
+      animation: pulse-user 2s infinite;
+      border-radius: 50%;
+    }
+
+    /* Estilo de la barra de desplazamiento lateral (Scrollbar fino) */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #0a0a0a; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #262626; border-radius: 3px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #404040; }
+  </style>
+</head>
+<body class="bg-neutral-900 text-white h-screen min-h-screen flex flex-col overflow-hidden">
+
+  <header class="h-20 bg-neutral-950 border-b border-neutral-800 px-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg z-10 flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">🗺️</span>
+      <div>
+        <h1 class="text-lg font-extrabold tracking-tight">Mapa Turístico Interactivo</h1>
+        <p class="text-xs text-neutral-400" id="status-origen">Detectando tu ubicación actual mediante GPS...</p>
+      </div>
+    </div>
+
+    <div class="bg-neutral-900 rounded-xl px-4 py-1.5 flex items-center border border-neutral-700 w-full md:w-96 shadow-inner">
+      <span class="text-neutral-400 mr-2">🔍</span>
+      <input 
+        type="text" 
+        id="searchBox"
+        placeholder="Buscar cerros, diques, museos, termas..." 
+        class="w-full text-sm text-neutral-200 bg-transparent border-none focus:outline-none placeholder-neutral-500"
+      />
+    </div>
+  </header>
+
+  <div class="wrapper-principal flex flex-col md:flex-row flex-grow w-full overflow-hidden relative">
+    
+    <aside class="w-full md:w-80 bg-neutral-950 border-r border-neutral-800 flex flex-col h-2/5 md:h-full z-10 flex-shrink-0">
+      <div class="p-4 border-b border-neutral-800 bg-neutral-900/50 flex-shrink-0">
+        <div class="flex items-center gap-2 text-blue-500 font-bold text-xs uppercase tracking-wider">
+          <span class="animate-ping inline-flex h-2 w-2 rounded-full bg-blue-400 opacity-75"></span>
+          <span>📍 Tu Punto Cero Actual</span>
+        </div>
+        <p class="text-sm font-semibold mt-1 truncate" id="label-origen">Detectando GPS...</p>
+        <p class="text-[10px] text-neutral-400 mt-0.5">Deslizá hacia abajo para ver todos los atractivos cercanos.</p>
+      </div>
+      
+      <div id="destinosList" class="flex-grow overflow-y-auto custom-scroll p-3 space-y-2 pb-10">
+        </div>
+    </aside>
+
+    <div class="flex-grow h-3/5 md:h-full relative bg-neutral-800">
+      <div id="map"></div>
+
+      <button 
+        id="btnRecentrar"
+        class="absolute bottom-5 right-5 z-[1000] bg-orange-600 hover:bg-orange-500 text-white font-extrabold text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all border border-orange-400 active:scale-95"
+      >
+        <span>📍</span> Volver a Cuadro Benegas
+      </button>
+    </div>
+  </div>
+
+  <footer class="h-10 bg-neutral-950 border-t border-neutral-800 py-2 text-center text-xs text-neutral-400 z-10 flex-shrink-0">
+    Categorías: 🌊 Espejos de Agua • 🏔️ Valles/Reservas • 🏛️ Hitos Culturales • ♨️ Termas • 🏡 Pueblos • 🎡 Diversión
+  </footer>
+
+  <script>
+    // Respaldo Oficial y Fijo de Cuadro Benegas: Delegación Municipal
+    const COORDS_CUADRO_BENEGAS = [-34.62006218556823711, -68.45499960018889851];
+    let PUNTO_ORIGEN = [...COORDS_CUADRO_BENEGAS];
+
+    // Base de datos completa con tus 51 coordenadas y emojis
+    const puntosTuristicos = [
+      { nombre: "Reserva Natural Las Salinas 🌾", coords: [-34.96071669578920194, -68.87174883712091855], tipo: "reserva" },
+      { nombre: "Pueblo El Sosneado 🏡", coords: [-35.07457653324637903, -69.56603880307758914], tipo: "pueblo" },
+      { nombre: "Laguna La Niña Encantada 💧", coords: [-35.15465173877948502, -69.86810194694454879], tipo: "agua" },
+      { nombre: "Los Molles 🌲", coords: [-35.1502953409551111, -69.94862160187638267], tipo: "reserva" },
+      { nombre: "Valle Las Leñas ⛷️", coords: [-35.15570222755386709, -70.08580673825278495], tipo: "reserva" },
+      { nombre: "Valle Hermoso 🏔️", coords: [-35.14784631477341748, -70.19315783218948468], tipo: "reserva" },
+      { nombre: "Pueblo El Nihuil 🏡", coords: [-35.03729025023974231, -68.67229296986559461], tipo: "pueblo" },
+      { nombre: "Embalse Agua del Toro Waves", coords: [-34.57287781145996064, -69.06745342883867522], tipo: "agua" },
+      { nombre: "Los Toldos ⛰️", coords: [-35.29462592466467186, -68.23976145781263369], tipo: "reserva" },
+      { nombre: "Casa Vivas 🏛️", coords: [-35.52967240487560474, -68.11602881604424908], tipo: "cultura" },
+      { nombre: "Parque de Los Niños 🎠", coords: [-34.61187403239883764, -68.34986408829281856], tipo: "diversion" },
+      { nombre: "Laberinto de Borges 🪵", coords: [-34.65606527007969362, -68.23844799481446444], tipo: "cultura" },
+      { nombre: "Embalse Los Reyunos 🌊", coords: [-34.58802004488386217, -68.6541472761929441], tipo: "agua" },
+      { nombre: "Pueblo Villa 25 de Mayo 🏡", coords: [-34.5835041308677944, -68.54513009769816279], tipo: "pueblo" },
+      { nombre: "Ex Hotel Termas El Sosneado ♨️", coords: [-34.7695944359775666, -70.06173138324255945], tipo: "termas" },
+      { nombre: "Paraje La Jaula 🍃", coords: [-34.66569083960947495, -69.32021362744708881], tipo: "reserva" },
+      { nombre: "Reserva Natural Laguna del Diamante ✨", coords: [-34.17957122931579761, -69.67514720732411604], tipo: "reserva" },
+      { nombre: "Pueblo Punta de Agua 🏡", coords: [-35.52286679896856469, -68.08238907103442727], tipo: "pueblo" },
+      { nombre: "Observatorio Pierre Auger 🌌", coords: [-35.29202258493646127, -69.01196505785975432], tipo: "cultura" },
+      { nombre: "Castillo de Pincheira 🧗", coords: [-35.51789756046086666, -69.79383200754887184], tipo: "reserva" },
+      { nombre: "Parque Arqueológico Las Tinajas 🎨", coords: [-34.75121171308300916, -68.4726901071655476], tipo: "cultura" },
+      { nombre: "Pozos de Las Ánimas 🟢", coords: [-35.18961645422203333, -69.99958156903220186], tipo: "agua" },
+      { nombre: "Parador El Desvío 🚗", coords: [-34.85038934951371203, -68.69549880337673642], tipo: "pueblo" },
+      { nombre: "Refugio La Faja 🪵", coords: [-34.53162693962244134, -69.26940020203875292], tipo: "reserva" },
+      { nombre: "Mirador Río Diamante 👁️", coords: [-34.56399082177350834, -69.17489499971209455], tipo: "agua" },
+      { nombre: "Cascada del Atuel 🌊", coords: [-34.54161410355740713, -70.08145694340170451], tipo: "agua" },
+      { nombre: "Museo de Historia Natural 🦖", coords: [-34.64526708685630751, -68.37660866215881583], tipo: "cultura" },
+      { nombre: "Museo Militar 🎖️", coords: [-34.63719759458879111, -68.26103612579221647], tipo: "cultura" },
+      { nombre: "Dique Aisol 🌊", coords: [-34.99190455681103629, -68.62370221970195416], tipo: "agua" },
+      { nombre: "Dique Tierras Blancas 💧", coords: [-34.90524307375886792, -68.61886135854710744], tipo: "agua" },
+      { nombre: "Los Pozones Mágicos ✨", coords: [-34.63447669427382181, -68.65475627772741518], tipo: "agua" },
+      { nombre: "Aeropuerto Santiago Germano ✈️", coords: [-34.58892214587151415, -68.40016270534042064], tipo: "cultura" },
+      { nombre: "Mirador San Francisco de Asís 🧘", coords: [-34.69757298624534769, -68.55942797180453852], tipo: "cultura" },
+      { nombre: "Mirador Cañón del Atuel 📸", coords: [-35.02000626263948391, -68.67462731712480206], tipo: "agua" },
+      { nombre: "Ciudad de General Alvear 🏙️", coords: [-34.97332366343093923, -67.69877962745397326], tipo: "pueblo" },
+      { nombre: "Rincón del Indio 🏹", coords: [-34.86530110962613094, -67.7858906778562158], tipo: "reserva" },
+      { nombre: "El Escorial Camping 🏕️", coords: [-34.7618070575724758, -68.32904660551044174], tipo: "reserva" },
+      { nombre: "Bajo Rosado ⛰️", coords: [-34.57186192678135939, -68.77896697262974612], tipo: "reserva" },
+      { nombre: "Mirador de Lago 🌊", coords: [-34.6013384309971741, -68.6401844427735881], tipo: "agua" },
+      { nombre: "Embalse Valle Grande ⚓", coords: [-34.83871073288879217, -68.51421003727902814], tipo: "agua" },
+      { nombre: "Cavernas de Las Brujas 🦇", coords: [-35.80157453555702318, -69.81923223469685524], tipo: "termas" },
+      { nombre: "Volcán Malacara 🌋", coords: [-35.77163950697456585, -69.47419828185380197], tipo: "reserva" },
+      { nombre: "Ciudad de Malargüe 🏙️", coords: [-35.4707431455571367, -69.58906789978971119], tipo: "pueblo" },
+      { nombre: "Termas de Cajón Grande ♨️", coords: [-35.90033466382926974, -70.28020367419932768], tipo: "termas" },
+      { nombre: "Bosque Petrificado 🪵", coords: [-35.91902930668830152, -69.77421934774730516], tipo: "reserva" },
+      { nombre: "Paso Internacional El Pehuenche 🏔️", coords: [-35.97887296221862385, -70.38847720661858887], tipo: "pueblo" },
+      { nombre: "Pueblo de Monte Comán 🏡", coords: [-34.5938350449135541, -67.87539080304854622], tipo: "pueblo" },
+      { nombre: "Delegación Municipal Cuadro Benegas 🏛️", coords: [-34.62006218556823711, -68.45499960018889851], tipo: "municipal" },
+      { nombre: "Dique El Tigre 🐯", coords: [-34.60739201487837846, -68.61314158271856911], tipo: "agua" },
+      { nombre: "Dique Derivador Galileo Vitale 🌊", coords: [-34.59134141636526749, -68.56026570573556], tipo: "agua" },
+      { nombre: "Embalse Valle Grande (Mirador) 📸", coords: [-35.02679486249171958, -68.67851658900485745], tipo: "agua" }
+    ];
+
+    const configTipos = {
+      agua: { icon: "🌊", color: "#0284c7" },
+      reserva: { icon: "🏔️", color: "#16a34a" },
+      cultura: { icon: "🏛️", color: "#b45309" },
+      termas: { icon: "♨️", color: "#dc2626" },
+      pueblo: { icon: "🏡", color: "#4b5563" },
+      diversion: { icon: "🎡", color: "#ec4899" },
+      municipal: { icon: "🏛️", color: "#6b7280" }
+    };
+
+    // Inicializar Mapa clásico de OpenStreetMap
+    const map = L.map('map', { center: [-34.750, -68.800], zoom: 9 });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const markersGroup = L.layerGroup().addTo(map);
+    let userMarker = null;
+
+    // Fórmula Haversine Correcta
+    function calcularDistanciaKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; 
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return (R * c).toFixed(1);
+    }
+
+    // Procesa las distancias y dibuja la interfaz limpia
+    function calcularYRenderizar(filtro = "") {
+      markersGroup.clearLayers();
+      const listContainer = document.getElementById("destinosList");
+      listContainer.innerHTML = "";
+      
+      puntosTuristicos.forEach(p => {
+        p.distancia = calcularDistanciaKm(PUNTO_ORIGEN[0], PUNTO_ORIGEN[1], p.coords[0], p.coords[1]);
+      });
+
+      // Ordenar la lista: El atractivo más cercano primero
+      puntosTuristicos.sort((a,b) => parseFloat(a.distancia) - parseFloat(b.distancia));
+
+      const query = filtro.toLowerCase().trim();
+
+      puntosTuristicos.forEach(p => {
+        if (query && !p.nombre.toLowerCase().includes(query)) return;
+
+        const cfg = configTipos[p.tipo] || { icon: "📍", color: "#4b5563" };
+
+        const customIcon = L.divIcon({
+          className: 'custom-tourist-pin',
+          html: `<div style="background-color: ${cfg.color}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${cfg.icon}</div>`,
+          iconSize: [30, 30],
+          iconAnchor: [16, 16]
+        });
+
+        const marker = L.marker(p.coords, { icon: customIcon });
+        
+        marker.bindTooltip(p.nombre, {
+          permanent: false,
+          direction: 'top',
+          className: 'tourist-map-label',
+          offset: [0, -14]
+        });
+
+        marker.bindPopup(`
+          <div style="font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a; min-width:180px;">
+            <div style="font-size:9px; font-weight:800; color:${cfg.color}; text-transform:uppercase; margin-bottom:2px;">${p.tipo}</div>
+            <h3 style="font-weight: 800; font-size:13px; margin:0; line-height:1.2;">${p.nombre}</h3>
+            <hr style="margin: 6px 0; border:0; border-top:1px solid #e2e8f0;"/>
+            <p style="font-size:11px; margin:0; color:#475569;">
+              🚗 Distancia desde tu posición:<br/>
+              <span style="font-size:13px; font-weight:800; color:#2563eb;">${p.distancia} Km</span>
+            </p>
+          </div>
+        `);
+
+        marker.addTo(markersGroup);
+
+        const card = document.createElement("button");
+        card.className = "w-full text-left p-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 transition-all flex items-center justify-between gap-2 group flex-shrink-0 shadow-sm";
+        card.innerHTML = `
+          <div class="truncate">
+            <h4 class="text-xs font-bold text-neutral-200 group-hover:text-white truncate">${p.nombre}</h4>
+            <span class="text-[10px] text-neutral-500 capitalize flex items-center gap-1 mt-0.5">
+              <span>${cfg.icon}</span> ${p.tipo}
+            </span>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <span class="text-[11px] font-extrabold text-sky-400">${p.distancia} km</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          map.setView(p.coords, 12);
+          marker.openPopup();
+        });
+
+        listContainer.appendChild(card);
+      });
+    }
+
+    // Coloca el marcador físico azul y la etiqueta fija "(Estoy aquí)"
+    function ubicarMarcadorUsuario(coords) {
+      if (userMarker) map.removeLayer(userMarker);
+
+      const userIcon = L.divIcon({
+        className: 'user-gps-pulse',
+        html: `<div style="background-color: #2563eb; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 12px rgba(37,99,235,0.7);"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+
+      userMarker = L.marker(coords, { icon: userIcon }).addTo(map);
+      
+      userMarker.bindTooltip("(Estoy aquí)", { 
+        permanent: true, 
+        direction: 'top', 
+        className: 'user-map-label-fixed', 
+        offset: [0, -12] 
+      }).openTooltip();
+
+      userMarker.bindPopup("<b style='color:#2563eb;'>Ubicación Actual</b><br/><span style='font-size:11px; color:#4b5563;'>Las distancias se miden desde este punto exacto.</span>");
+    }
+
+    // Sincronizar renderizado y forzar el tamaño de Leaflet
+    function iniciarYForzarMapa() {
+      ubicarMarcadorUsuario(PUNTO_ORIGEN);
+      calcularYRenderizar();
+      
+      map.invalidateSize(); 
+      setTimeout(() => { map.invalidateSize(); }, 200);
+      setTimeout(() => { map.invalidateSize(); }, 600);
+    }
+
+    // Activar Geolocalización por el Navegador con Alta Precisión
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // Filtro de resguardo: Si el navegador te tira a más de 150km (en Mendoza capital), forzamos Cuadro Benegas
+          const distFiltro = calcularDistanciaKm(lat, lon, COORDS_CUADRO_BENEGAS[0], COORDS_CUADRO_BENEGAS[1]);
+          
+          if (parseFloat(distFiltro) > 150) {
+            console.warn("Se detectó un salto erróneo a Mendoza Capital. Forzando Cuadro Benegas.");
+            PUNTO_ORIGEN = [...COORDS_CUADRO_BENEGAS];
+            document.getElementById("status-origen").innerText = "Ajustado automáticamente en San Rafael para evitar errores de IP.";
+            document.getElementById("label-origen").innerText = "🏛️ Cuadro Benegas Centro (Fijo)";
+            map.setView(PUNTO_ORIGEN, 10);
+          } else {
+            PUNTO_ORIGEN = [lat, lon];
+            document.getElementById("status-origen").innerText = "Distancias calculadas en vivo basadas en tu GPS.";
+            document.getElementById("label-origen").innerText = "📍 Ubicación en Vivo Detectada";
+            map.setView(PUNTO_ORIGEN, 11);
+          }
+          
+          iniciarYForzarMapa();
+        },
+        (error) => {
+          PUNTO_ORIGEN = [...COORDS_CUADRO_BENEGAS];
+          document.getElementById("status-origen").innerText = "Ubicación GPS bloqueada. Usando nodo central alternativo.";
+          document.getElementById("label-origen").innerText = "🏛️ Delegación Cuadro Benegas (Fijo)";
+          map.setView(PUNTO_ORIGEN, 11);
+          iniciarYForzarMapa();
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 } // Ajustes duros para forzar precisión real
+      );
+    } else {
+      PUNTO_ORIGEN = [...COORDS_CUADRO_BENEGAS];
+      document.getElementById("status-origen").innerText = "Navegador sin soporte GPS. Usando nodo central.";
+      document.getElementById("label-origen").innerText = "🏛️ Delegación Cuadro Benegas (Fijo)";
+      map.setView(PUNTO_ORIGEN, 11);
+      iniciarYForzarMapa();
+    }
+
+    // ACCIÓN DEL BOTÓN FLOTANTE: Forzar regreso inmediato a San Rafael
+    document.getElementById("btnRecentrar").addEventListener("click", () => {
+      PUNTO_ORIGEN = [...COORDS_CUADRO_BENEGAS];
+      document.getElementById("status-origen").innerText = "Mapa restablecido en Cuadro Benegas, San Rafael.";
+      document.getElementById("label-origen").innerText = "🏛️ Delegación Cuadro Benegas (Fijo)";
+      map.setView(PUNTO_ORIGEN, 11);
+      iniciarYForzarMapa();
+    });
+
+    // Capturar tipeo del buscador
+    document.getElementById("searchBox").addEventListener("input", (e) => {
+      calcularYRenderizar(e.target.value);
+    });
+
+    window.addEventListener('resize', () => { map.invalidateSize(); });
+  </script>
+</body>
+</html>
