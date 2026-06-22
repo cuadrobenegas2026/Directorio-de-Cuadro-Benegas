@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Fotos - Cuadro Benegas</title>
+    <style>
+        /* Reset de estilos básicos y tipografía moderna */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Fondo dinámico y centrado perfecto */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            padding: 20px;
+        }
+
+        /* Tarjeta principal con diseño moderno y sombras suaves */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            max-width: 650px;
+            width: 100%;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Título principal destacado */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Subtítulo o descripción */
+        p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Contenedor de botones flexible */
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Estilo base para los botones */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 220px;
+        }
+
+        /* Botón de Reinas */
+        .btn-reinas {
+            background: linear-gradient(135deg, #3a7bd5, #3a6073);
+            color: #ffffff;
+        }
+
+        .btn-reinas:hover {
+            background: linear-gradient(135deg, #3a6073, #3a7bd5);
+            box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Botón de Paisajes */
+        .btn-paisajes {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            color: #ffffff;
+        }
+
+        .btn-paisajes:hover {
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            box-shadow: 0 6px 20px rgba(33, 147, 176, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Archivo Visual: Cuadro Benegas</h1>
+        <p>Accede a la galería de fotos de reinas y paisajes.</p>
+        
+        <div class="button-group">
+            <!-- ⚠️ REEMPLAZA LAS URL DE ABAJO POR TUS ENLACES REALES DE LA NUBE -->
+            <a href="https://photos.app.goo.gl/pvkSb8AceN7UtXLq5" class="btn btn-reinas">Ver Galería reinas en la Nube</a>
+            <a href="https://photos.app.goo.gl/QLvGU34sAFcPJ6nR8" class="btn btn-paisajes">Ver Galería paisajes en la Nube</a>
+        </div>
+    </div>
+
+</body>
+</html>
