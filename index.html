@@ -524,15 +524,21 @@
           </div>
 
           {/* BARRA SUPERIOR (Sticky y Móvil-Friendly) */}
-          <header className="sticky top-0 z-50 bg-neutral-950 border-b border-neutral-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3 no-print text-white">
-            <div className="flex items-center gap-2">
-              <span className="text-[12px] font-black tracking-wider uppercase text-amber-500">Guía Distrito Cuadro Benegas</span>
+          <header className="sticky top-0 z-50 bg-neutral-950 border-b border-neutral-800 px-4 py-2 flex flex-wrap items-center justify-between gap-3 no-print text-white">
+            <div className="flex items-center gap-3">
+              {/* Logo de la Municipalidad con tamaño ampliado para excelente lectura */}
+              <img 
+                src="logos municipalidad03.png" 
+                alt="Municipalidad de San Rafael" 
+                className="h-20 w-auto object-contain rounded"
+              />
+              <span className="text-[12px] font-black tracking-wider uppercase text-amber-500 hidden md:inline">Distrito Cuadro Benegas</span>
             </div>
             <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <a href="./equipamiento_comunitario_cuadro_benegas.html" className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🏥 Equipamiento</a>
               <a href="./mapa_empresas.html" className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🗺️ Mapa Empresas</a>
               <a href="./mapa_turistico.html" className="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🌟 Mapa Turístico</a>
-              <a href="./fotocuadrobenegas.html" className="px-3 py-1.5 bg-yellow-800 hover:bg-yellow-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">📸 Fotos</a>
+              <a href="./Fotos_Cuadro Benegas.html" className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">📸 Fotos</a>
             </nav>
           </header>
 
