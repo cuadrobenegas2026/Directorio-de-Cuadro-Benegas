@@ -523,28 +523,27 @@
             <p className="text-xs text-neutral-500 mt-1">Directorio impreso • Total de empresas registradas: {stats.total}</p>
           </div>
 
-          <!-- BARRA SUPERIOR (Optimizada para Celular y Computadora) -->
-          <header class="sticky top-0 z-50 bg-neutral-950 border-b border-neutral-800 px-4 py-2 flex flex-col md:flex-row md:items-center justify-between gap-3 no-print text-white">
-            <!-- Contenedor del Logo y Título -->
-            <div class="flex items-center gap-3">
+          {/* BARRA SUPERIOR (Optimizada para Celular y Computadora) */}
+          <header className="sticky top-0 z-50 bg-neutral-950 border-b border-neutral-800 px-4 py-2 flex flex-col md:flex-row md:items-center justify-between gap-3 no-print text-white">
+            {/* Contenedor del Logo y Título */}
+            <div className="flex items-center gap-3">
               <img 
                 src="logos municipalidad03.png" 
                 alt="Municipalidad de San Rafael" 
-                class="h-16 md:h-20 w-auto object-contain rounded"
+                className="h-16 md:h-20 w-auto object-contain rounded"
               />
-              <span class="text-sm md:text-base font-black tracking-wider uppercase text-amber-500">
+              <span className="text-sm md:text-base font-black tracking-wider uppercase text-amber-500">
                 Distrito Cuadro Benegas
               </span>
             </div>
-            <!-- Botones de Navegación -->
-            <nav class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <a href="./equipamiento_comunitario_cuadro_benegas.html" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🏥 Equipamiento</a>
-              <a href="./mapa_empresas.html" class="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🗺️ Mapa Empresas</a>
-              <a href="./mapa_turistico.html" class="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🌟 Mapa Turístico</a>
-              <a href="./Fotos_Cuadro Benegas.html" class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">📸 Fotos</a>
+            {/* Botones de Navegación */}
+            <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <a href="./equipamiento_comunitario_cuadro_benegas.html" className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🏥 Equipamiento</a>
+              <a href="./mapa_empresas.html" className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🗺️ Mapa Empresas</a>
+              <a href="./mapa_turistico.html" className="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">🌟 Mapa Turístico</a>
+              <a href="./Fotos_Cuadro Benegas.html" className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-colors flex items-center gap-1">📸 Fotos</a>
             </nav>
-          </header>  
-                       
+          </header>                       
           {/* CONTENIDO PRINCIPAL */}
           <main className="max-w-7xl mx-auto px-4 py-6 flex-grow w-full print-full">
             
